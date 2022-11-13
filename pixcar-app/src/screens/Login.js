@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-class Home extends Component {
+class Login extends Component {
     constructor() {
         super()
         this.state={
@@ -12,11 +12,11 @@ class Home extends Component {
     render() {
         return(
             <View>
-                <Text>Home</Text>
+                <Text>Screen de Login</Text>
             </View>
         )
     }
 
 }
 
-export default Home;
+export default Login;

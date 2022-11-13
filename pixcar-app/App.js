@@ -1,23 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
-// importar vistas
-import MiPerfil from './src/screens/MiPerfil';
+import React from 'react';
+import {NavigationContainer} from "@react-navigation/native"
+import Navegador from './src/components/Navegador';
 
 export default function App() {
   return (
-
-      <MiPerfil />
+    <NavigationContainer>
+      <Navegador />
+    </NavigationContainer>
    
   
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
