@@ -4,9 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator()
 
 // importar vistas
-import MiPerfil from '../screens/MiPerfil';
-import Home from '../screens/Home';
-import Postear from '../screens/Postear';
+import MiPerfil from './MiPerfil';
+import Home from './Home';
+import Postear from './Postear';
 
 class Navegador extends Component {
         constructor(){

@@ -4,6 +4,16 @@ import { TextInput } from 'react-native-gesture-handler';
 import { TouchableOpacity } from 'react-native-web';
 import { auth, db } from '../firebase/config.js';
 
+// Styles
+const styles = StyleSheet.create({
+    main: {
+        backgroundColor: 'rgb(46, 73, 153)',
+        margin: '1.5vw',
+        borderRadius: '20px',
+        padding: '1vw'
+    }
+})
+
 class Register extends Component {
     constructor() {
         super()
@@ -51,7 +61,7 @@ class Register extends Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.main}>
                 <Text>¿No tenés cuenta? ¡Registrate!</Text>
                 <TextInput
                     keyboardType='default'
@@ -81,12 +91,10 @@ class Register extends Component {
 
                 {
                     this.state.email == '' || this.state.contrasena == '' || this.state.nombreUsuario == '' ?
-                        <Text>Recuerda completar tu email, nombre de usuario y contraseña </Text>
+                        <Text>Recordá completar tu email, nombre de usuario y contraseña </Text>
                         :
                         <Text>Campos obligatorios completados :)</Text>
                 }
-
-
 
                 <TouchableOpacity onPress={() => this.camposObligatorios()}>
                     <Text>¡Registrame!</Text>
@@ -95,7 +103,6 @@ class Register extends Component {
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
                     <Text>Ya tengo una cuenta</Text>
                 </TouchableOpacity>
-                
 
             </View>
         )

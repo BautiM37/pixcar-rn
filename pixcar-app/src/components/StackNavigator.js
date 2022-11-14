@@ -6,7 +6,7 @@ import Login from '../screens/Login';
 import Register from '../screens/Register';
 
 // importar Tab Navigator
-import Navegador from './Navegador';
+import Navegador from '../screens/Navegador';
 
 const Stack = createNativeStackNavigator();
 
