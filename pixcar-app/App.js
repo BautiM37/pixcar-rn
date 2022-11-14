@@ -1,14 +1,9 @@
 import React from 'react';
-import {NavigationContainer} from "@react-navigation/native"
-import Navegador from './src/components/Navegador';
+import StackNavigator from './src/components/StackNavigator';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Navegador />
-    </NavigationContainer>
-   
-  
+    <StackNavigator />
   );
 }
 
