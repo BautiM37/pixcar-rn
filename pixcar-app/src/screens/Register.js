@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
 })
 
 class Register extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             registrado: false,
             error: [],

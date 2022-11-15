@@ -18,9 +18,9 @@ class Navegador extends Component {
     render(){
     return (
         <Tab.Navigator>
-            <Tab.Screen name="Home" component= {()=>(<Home/>)} />
-            <Tab.Screen name="Perfil" component= {()=>(<MiPerfil/>)}/>
-            <Tab.Screen name="Postear" component= {()=>(<Postear/>)} />
+            <Tab.Screen name="Home" component= {Home} />
+            <Tab.Screen name="UnPerfil" component= {MiPerfil}/>
+            <Tab.Screen name="Postear" component= {Postear} />
         </Tab.Navigator>
     
     
