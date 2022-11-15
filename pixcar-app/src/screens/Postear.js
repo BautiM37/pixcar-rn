@@ -1,56 +1,56 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-web';
+import { TextInput } from 'react-native-gesture-handler';
 import { auth, db } from '../firebase/config.js';
 import MyCamera from "../components/MyCamera";
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class Postear extends Component {
     constructor() {
         super()
         this.state={
-            logueado: true,
+            logueado: false,
             email: '',
             likes: '',
             comentarios: '',
-            description: '',
+            descripcion: '',
             showCamera: '',
-            url: ''
+            url: '',
+            error: []
         }
     }
 
     componentDidMount() {
         auth.onAuthStateChanged(user => {
-            if(user) {
-                this.setState({
-                    logueado: false
-                })
-                this.props.navigation.navigate('Navegador')
-            }
+            console.log(user)
         })
     }
 
-    onImageUpload(url) {
+    crearPost() {
+        db.collection('posteos').add({
+            email: auth.currentUser.email,
+            descripcion: this.state.descripcion,
+            createdAt: Date.now(),
+            likes:[],
+            comentarios:[],
+            imagen: this.state.url
+        })
+    
+    .then(() => {this.props.navigation.navigate('Posteos')})
+    .catch(error => {
+        this.setState({ error: error.message})
+    })
+
+
+}
+
+onImageUpload(url) {
         this.setState({
             showCamera: false,
             url: url
         });
     }    
 
-    crearPost() {
-        db.collection('posts').add({
-            owner: auth.currentUser.email,
-            description: this.state.description,
-            createdAt: Date.now(),
-            likes:[],
-            comentarios:[],
-            photo: this.state.url
-        })
-    
-    .then(() => {this.props.navigation.navigate('posteos')})
-    .catch(error => {
-        this.setState({ error: error.message})
-    })
-}
     render() {
         return(
             <View>
@@ -58,10 +58,14 @@ class Postear extends Component {
             <TextInput
              keyboardType='default'
                     placeholder='descripcion'
-                    onChangeText={text => this.setState({ description: text })}
-                    value={this.state.description}
+                    onChangeText={text => this.setState({ descripcion: text })}
+                    value={this.state.descripcion}
                 />
-            <MyCamera onImageUpload={(url)=>this.onImageUpload(url)}/>
+                <MyCamera onImageUpload={(url)=>this.onImageUpload(url)}/>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Posteos')}>
+           <Text>Agregar Posteo</Text>
+            </TouchableOpacity>
+
             </View>
         )
     }
