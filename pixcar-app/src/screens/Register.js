@@ -6,11 +6,61 @@ import { auth, db } from '../firebase/config.js';
 
 // Styles
 const styles = StyleSheet.create({
-    main: {
-        backgroundColor: 'rgb(46, 73, 153)',
+    titulo: {
+        backgroundColor: 'rgb(99, 166, 199)',
         margin: '1.5vw',
-        borderRadius: '20px',
-        padding: '1vw'
+        borderRadius: '5px',
+        padding: '5vw',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        marginBottom: '20px'
+    },
+    inputs: {
+        backgroundColor: 'rgb(137, 180, 201)',
+        margin: '1.5vw',
+        borderRadius: '5px',
+        padding: '2.5vw',
+    },
+    infoMal: {
+        color: 'red',
+        margin: '1.5vw',
+        marginTop: '5px',
+        marginBottom: '5px'
+    },
+    infoBien: {
+        color: 'green',
+        margin: '1.5vw',
+        marginTop: '5px',
+        marginBottom: '5px'
+    },
+    ocultarInfo: {
+        display: 'none'
+    },
+    faltanCampos: {
+        color: 'red',
+        textAlign: 'center',
+        marginTop: '20px',
+        marginBottom: '20px'
+    },
+    camposCompletos: {
+        color: 'green',
+        textAlign: 'center',
+        marginTop: '20px',
+        marginBottom: '20px'
+    },
+    botonRegistro: {
+        backgroundColor: 'rgb(99, 166, 199)',
+        margin: '1.5vw',
+        borderRadius: '5px',
+        padding: '5vw',
+        textAlign: 'center',
+        marginBottom: '20px',
+        width: '50vw',
+        border: '2px solid black',
+        marginLeft: '25vw'
+    },
+    botonLink: {
+        marginLeft: '33vw'
     }
 })
 
@@ -25,18 +75,32 @@ class Register extends Component {
             nombreUsuario: '',
             bio: '',
             obligatoriosLlenos: false,
+            emailValido: false,
+            esconderError: true
         }
     }
 
     componentDidMount() {
         auth.onAuthStateChanged(user => {
-            console.log(user)
+            if(user) {
+                this.setState({
+                    logueado: true
+                })
+                this.props.navigation.navigate('Navegador')
+            }
         })
     }
 
+    validarMail(text) {
+        text.includes('@') && text.includes('.') ?
+        this.setState({ emailValido: true })
+        :
+        this.setState({ emailValido: false })
+    }
+
     camposObligatorios() {
-        this.state.email == '' || this.state.contrasena == '' || this.state.nombreUsuario == '' ?
-            this.setState({ obligatoriosLlenos: false })
+        this.state.emailValido == false || this.state.contrasena.length < 8 || this.state.nombreUsuario == '' ?
+            this.setState({ obligatoriosLlenos: false, esconderError: false })
             :
             this.setState({ obligatoriosLlenos: true })
         this.registro()
@@ -53,7 +117,7 @@ class Register extends Component {
                     timestamp: Date.now()
                 })
             })
-            .then(() => {this.props.navigation.navigate('Login')})
+            .then(() => { this.props.navigation.navigate('Login') })
             .catch(error => {
                 this.setState({ error: error.message })
             })
@@ -61,49 +125,80 @@ class Register extends Component {
 
     render() {
         return (
-            <View style={styles.main}>
-                <Text>¿No tenés cuenta? ¡Registrate!</Text>
-                <TextInput
-                    keyboardType='default'
-                    placeholder='nombre de usuario'
-                    onChangeText={text => this.setState({ nombreUsuario: text })}
-                    value={this.state.nombreUsuario}
-                />
-                <TextInput
-                    keyboardType='email-address'
-                    placeholder='email'
-                    onChangeText={text => this.setState({ email: text })}
-                    value={this.state.email}
-                />
-                <TextInput
-                    keyboardType='default'
-                    placeholder='contraseña'
-                    secureTextEntry={true}
-                    onChangeText={text => this.setState({ contrasena: text })}
-                    value={this.state.contrasena}
-                />
-                <TextInput
-                    keyboardType='default'
-                    placeholder='¡algo acerca tuyo!'
-                    onChangeText={text => this.setState({ bio: text })}
-                    value={this.state.bio}
-                />
+            <View>
+                <Text style={styles.titulo}>¿No tenés cuenta? ¡Registrate!</Text>
+                <View>
+                    <TextInput style={styles.inputs} maxLength='20'
+                        keyboardType='default'
+                        placeholder='nombre de usuario'
+                        onChangeText={text => this.setState({ nombreUsuario: text })}
+                        value={this.state.nombreUsuario}
+                    />
+                    <TextInput style={styles.inputs}
+                        keyboardType='email-address'
+                        placeholder='email'
+                        onChangeText={text => {
+                            this.setState({ email: text }),
+                            this.validarMail(text)
+                        }}
+                        value={this.state.email}
+                    />
+                    {
+                        this.state.emailValido == false ?
+                            <Text style={
+                                this.state.esconderError == true ?
+                                styles.ocultarInfo
+                                :
+                                styles.infoMal
+                            }>Mail inválido</Text>
+                            :
+                            <Text style={styles.infoBien}>¡Mail válido!</Text>
+                    }
+                    <TextInput style={styles.inputs}
+                        keyboardType='default'
+                        placeholder='contraseña'
+                        secureTextEntry={true}
+                        onChangeText={text => this.setState({ contrasena: text })}
+                        value={this.state.contrasena}
+                    />
+                    {
+                        this.state.contrasena.length < 8 ?
+                            <Text style={
+                                this.state.esconderError == true ?
+                                styles.ocultarInfo
+                                :
+                                styles.infoMal
+                            }>Debe tener al menos 8 caracteres</Text>
+                            :
+                            <Text style={styles.infoBien}>¡Contraseña válida!</Text>
+                    }
+                    <TextInput style={styles.inputs} maxLength='45'
+                        keyboardType='default'
+                        placeholder='¡algo breve acerca tuyo!'
+                        onChangeText={text => this.setState({ bio: text })}
+                        value={this.state.bio}
+                    />
+                    {
+                        this.state.emailValido == false || this.state.contrasena.length < 8 || this.state.nombreUsuario == '' ?
+                            <Text style={
+                                this.state.esconderError == true ?
+                                styles.ocultarInfo
+                                :
+                                styles.faltanCampos
+                            }>Recordá completar tu email, username y contraseña </Text>
+                            :
+                            <Text style={styles.camposCompletos}>Campos obligatorios completados :)</Text>
+                    }
 
-                {
-                    this.state.email == '' || this.state.contrasena == '' || this.state.nombreUsuario == '' ?
-                        <Text>Recordá completar tu email, nombre de usuario y contraseña </Text>
-                        :
-                        <Text>Campos obligatorios completados :)</Text>
-                }
+                    <TouchableOpacity onPress={() => this.camposObligatorios()} style={styles.botonRegistro}>
+                        <Text>¡Registrame!</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.camposObligatorios()}>
-                    <Text>¡Registrame!</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')} style={styles.botonLink}>
+                        <Text>Ya tengo una cuenta</Text>
+                    </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
-                    <Text>Ya tengo una cuenta</Text>
-                </TouchableOpacity>
-
+                </View>
             </View>
         )
     }
