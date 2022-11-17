@@ -4,13 +4,24 @@ import { Camera } from 'expo-camera';
 import { storage } from '../firebase/config';
 
 const styles = StyleSheet.create({
-    cameraBody : {
+    contenedor: {
+        flex: 1,
+        width: '100vw'
+    },
+    cameraBody: {
         flex: 1,
         height: '400px',
         width: '400px',
     },
-    contenedor: {
+    cont: {
         flex: 1
+    },
+    boton: {
+        flex: 1
+    },
+    input: {
+        width: '100%',
+        textAlign: 'center'
     }
 })
 
@@ -25,7 +36,7 @@ class MyCamera extends Component {
         }
         this.metodosDeCamara = undefined
     }
-    
+
     componentDidMount() {
         Camera.requestCameraPermissionsAsync()
             .then(() => {
@@ -35,7 +46,7 @@ class MyCamera extends Component {
             })
             .catch(error => {
                 this.setState({ error: error.message }),
-                console.log(error)
+                    console.log(error)
             })
     }
 
@@ -64,7 +75,7 @@ class MyCamera extends Component {
             })
             .catch(error => {
                 this.setState({ error: error.message }),
-                console.log(error)
+                    console.log(error)
             })
     }
 
@@ -74,43 +85,40 @@ class MyCamera extends Component {
             mostrarCamara: true
         })
     }
-
     render() {
         return (
-            <View>
+            <View style={styles.contenedor}>
+
                 {
                     this.state.permisos == true ?
                         this.state.mostrarCamara == false ?
-                            <View style={styles.contenedor}>
-
-                                <Image style={styles.preview}
+                            <View style={styles.cont}>
+                                <Image
+                                    style={styles.cameraBody}
                                     source={{ uri: this.state.photo }}
                                 />
-                                <View style={styles.buttonArea}>
-
+                                <View>
                                     <TouchableOpacity onPress={() => this.guardarFoto()}>
-                                        <Text>Aceptar</Text>
+                                        <Text>Siguiente</Text>
                                     </TouchableOpacity>
 
                                     <TouchableOpacity onPress={() => this.borrarFoto()}>
-                                        <Text>Rechazar</Text>
+                                        <Text>Borrar</Text>
                                     </TouchableOpacity>
-
                                 </View>
                             </View>
                             :
-                            <View style={styles.contenedor}>
+                            <View style={styles.cont}>
                                 <Camera
                                     style={styles.cameraBody}
                                     type={Camera.Constants.Type.front}
-                                    ref={metodosDeCamara => this.metodosDeCamara = metodosDeCamara}
+                                    ref={(metodos) => this.metodosDeCamara = metodos}
                                 />
-                                <TouchableOpacity
-                                    style={styles.shootButton}
-                                    onPress={() => this.tomarFoto()}>
-                                    <Text>Tomar foto</Text>
-                                </TouchableOpacity>
-
+                                <View style={styles.boton}>
+                                    <TouchableOpacity onPress={() => this.tomarFoto()}>
+                                        <Text style={styles.input}>Tomar foto</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         :
                         <Text>Habilitá la camara desde los ajustes de tu smartphone</Text>

@@ -10,6 +10,14 @@ const styles = StyleSheet.create({
     photo: {
         width: '200px',
         height: '200px'
+    },
+    contenedor: {
+        backgroundColor: 'white',
+        flex: 1,
+        width: '100vw',
+        padding: 30,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     }
 })
 
@@ -31,32 +39,32 @@ class Postear extends Component {
             likes: [],
             comentarios: [],
             imagen: this.state.urlFoto,
-            posteo: this.state.posteo
+            descripcion: this.state.posteo
         })
 
             .then(() => {
                 this.props.navigation.navigate('Home')
                 this.setState({
                     showCamera: true,
-                    post: ''
+                    posteo: ''
                 })
             })
             .catch(error => {
                 this.setState({ error: error.message }),
-                console.log(error)
+                    console.log(error)
             })
     }
 
     onImageUpload(url) {
         this.setState({
-            showCamera: false,
-            urlFoto: url
+            urlFoto: url,
+            showCamera: false
         });
     }
 
     render() {
         return (
-            <View>
+            <View style={styles.contenedor}>
                 {
                     this.state.showCamera == true ?
                         <MyCamera onImageUpload={(url) => this.onImageUpload(url)} style={styles.cameraBody} />
