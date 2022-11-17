@@ -19,8 +19,8 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name='Login' component={Login} options={{headerShown: false}}/>
         <Stack.Screen name='Register' component={Register} options={{headerShown: false}}/>
-        <Stack.Screen name='Navegador' component={Navegador} />
-        <Stack.Screen name='MiPerfil' component={MiPerfil} />
+        <Stack.Screen name='Navegador' component={Navegador} options={{headerShown: false}}/>
+        <Stack.Screen name='MiPerfil' component={MiPerfil} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
