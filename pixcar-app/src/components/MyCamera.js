@@ -1,34 +1,31 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-web';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
+import { storage } from '../firebase/config';
 
-const styles = StyleSheet.create ({
-    cameraBody: {
-
+const styles = StyleSheet.create({
+    cameraBody : {
+        flex: 1,
+        height: '400px',
+        width: '400px',
     },
-    shootButton: {
-
-    },
-    preview: {
-
-    },
-    buttonArea: {
-
+    contenedor: {
+        flex: 1
     }
 })
 
 class MyCamera extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
-            metodosDeCamara: '',
             permisos: false,
             error: '',
             photo: '',
-            mostrarCamara: false
+            mostrarCamara: true
         }
+        this.metodosDeCamara = undefined
     }
+    
     componentDidMount() {
         Camera.requestCameraPermissionsAsync()
             .then(() => {
@@ -37,7 +34,8 @@ class MyCamera extends Component {
                 })
             })
             .catch(error => {
-                this.setState({ error: error.message })
+                this.setState({ error: error.message }),
+                console.log(error)
             })
     }
 
@@ -53,56 +51,73 @@ class MyCamera extends Component {
 
     guardarFoto() {
         fetch(this.state.photo)
-        .then(res => res.blob())
-        .then(image => {
-            const ref = storage.ref(`photos/${Date.now()}.jpg`)
-            ref.put(image)
-                .then(() => {
-                    ref.getDownloadURL()
-                        .then(url => {
-                            this.props.onImageUpload(url);
-                        })
-                })
-        })
-        .catch(error => {
-            this.setState({ error: error.message })
-        })
+            .then(res => res.blob())
+            .then(image => {
+                const ref = storage.ref(`photos/${Date.now()}.jpg`)
+                ref.put(image)
+                    .then(() => {
+                        ref.getDownloadURL()
+                            .then(url => {
+                                this.props.onImageUpload(url);
+                            })
+                    })
+            })
+            .catch(error => {
+                this.setState({ error: error.message }),
+                console.log(error)
+            })
     }
 
     borrarFoto() {
-        
+        this.setState({
+            photo: '',
+            mostrarCamara: true
+        })
     }
 
     render() {
         return (
             <View>
-                <Camera
-                    style={styles.cameraBody}
-                    type={Camera.Constants.Type.back}
-                    ref={metodosDeCamara => this.metodosDeCamara = metodosDeCamara}
-                />
-                <TouchableOpacity
-                    style={styles.shootButton}
-                    onPress={() => this.takePicture()}>
-                    <Text>Tomar foto</Text>
-                </TouchableOpacity>
+                {
+                    this.state.permisos == true ?
+                        this.state.mostrarCamara == false ?
+                            <View style={styles.contenedor}>
 
-                <Image style={styles.preview}
-                    source={{ uri: this.state.photo }}
-                />
-                <View style={styles.buttonArea}>
+                                <Image style={styles.preview}
+                                    source={{ uri: this.state.photo }}
+                                />
+                                <View style={styles.buttonArea}>
 
-                    <TouchableOpacity onPress={() => this.guardarFoto()}>
-                        <Text>Aceptar</Text>
-                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.guardarFoto()}>
+                                        <Text>Aceptar</Text>
+                                    </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => this.borrarFoto()}>
-                        <Text>Rechazar</Text>
-                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.borrarFoto()}>
+                                        <Text>Rechazar</Text>
+                                    </TouchableOpacity>
 
-                </View>
+                                </View>
+                            </View>
+                            :
+                            <View style={styles.contenedor}>
+                                <Camera
+                                    style={styles.cameraBody}
+                                    type={Camera.Constants.Type.front}
+                                    ref={metodosDeCamara => this.metodosDeCamara = metodosDeCamara}
+                                />
+                                <TouchableOpacity
+                                    style={styles.shootButton}
+                                    onPress={() => this.tomarFoto()}>
+                                    <Text>Tomar foto</Text>
+                                </TouchableOpacity>
 
+                            </View>
+                        :
+                        <Text>Habilitá la camara desde los ajustes de tu smartphone</Text>
+                }
             </View>
         )
     }
 }
+
+export default MyCamera;

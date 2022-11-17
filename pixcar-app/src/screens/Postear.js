@@ -1,70 +1,82 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { View, Text, Image, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import { auth, db } from '../firebase/config.js';
 import MyCamera from "../components/MyCamera";
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
+const styles = StyleSheet.create({
+    cameraBody: {
+        flex: 1
+    },
+    photo: {
+        width: '200px',
+        height: '200px'
+    }
+})
 
 class Postear extends Component {
     constructor() {
         super()
-        this.state={
-            logueado: false,
-            email: '',
-            likes: '',
-            comentarios: '',
-            descripcion: '',
-            showCamera: '',
-            url: '',
-            error: []
+        this.state = {
+            showCamera: true,
+            urlFoto: '',
+            error: '',
+            posteo: ''
         }
-    }
-
-    componentDidMount() {
-        auth.onAuthStateChanged(user => {
-            console.log(user)
-        })
     }
 
     crearPost() {
         db.collection('posteos').add({
             email: auth.currentUser.email,
-            descripcion: this.state.descripcion,
             createdAt: Date.now(),
-            likes:[],
-            comentarios:[],
-            imagen: this.state.url
+            likes: [],
+            comentarios: [],
+            imagen: this.state.urlFoto,
+            posteo: this.state.posteo
         })
-    
-    .then(() => {this.props.navigation.navigate('Posteos')})
-    .catch(error => {
-        this.setState({ error: error.message})
-    })
 
+            .then(() => {
+                this.props.navigation.navigate('Home')
+                this.setState({
+                    showCamera: true,
+                    post: ''
+                })
+            })
+            .catch(error => {
+                this.setState({ error: error.message }),
+                console.log(error)
+            })
+    }
 
-}
-
-onImageUpload(url) {
+    onImageUpload(url) {
         this.setState({
             showCamera: false,
-            url: url
+            urlFoto: url
         });
-    }    
+    }
 
     render() {
-        return(
+        return (
             <View>
-                <Text>¿Quiéres agregar un posteo? ¡Hazlo!</Text>
-            <TextInput
-             keyboardType='default'
-                    placeholder='descripcion'
-                    onChangeText={text => this.setState({ descripcion: text })}
-                    value={this.state.descripcion}
-                />
-                <MyCamera onImageUpload={(url)=>this.onImageUpload(url)}/>
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('Posteos')}>
-           <Text>Agregar Posteo</Text>
-            </TouchableOpacity>
+                {
+                    this.state.showCamera == true ?
+                        <MyCamera onImageUpload={(url) => this.onImageUpload(url)} style={styles.cameraBody} />
+                        :
+                        <View>
+
+                            <Image style={styles.photo} source={{ uri: this.state.urlFoto }} />
+                            <TextInput
+                                keyboardType='default'
+                                placeholder='descripcion'
+                                onChangeText={text => this.setState({ posteo: text })}
+                                value={this.state.posteo}
+                            />
+
+                            <TouchableOpacity onPress={() => { this.crearPost(); this.props.navigation.navigate('Home') }}>
+                                <Text>Agregar Posteo</Text>
+                            </TouchableOpacity>
+
+                        </View>
+                }
 
             </View>
         )
