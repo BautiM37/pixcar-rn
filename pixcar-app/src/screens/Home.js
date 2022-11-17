@@ -10,7 +10,7 @@ class Home extends Component {
         }
     }
     componentDidMount(){
-        db.collection("Posteos").onSnapshot((docs)=>{
+        db.collection("posteos").onSnapshot((docs)=>{
             let posteo= []
             docs.forEach(doc => {
                 posteo.push({
@@ -29,13 +29,14 @@ class Home extends Component {
     render() {
         return(
             <View>
-                <Text>Home</Text>
+                <Text>Posteos</Text>
                 <FlatList
                     data={this.state.posteos}
                     keyExtractor={(data)=>data.id}
                     renderItem={(item)=>(<Posteos data={item}/>)}
-                
                 ></FlatList>
+
+
             </View>
         )
     }

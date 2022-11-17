@@ -32,6 +32,7 @@ class Postear extends Component {
         }
     }
 
+    
     crearPost() {
         db.collection('posteos').add({
             email: auth.currentUser.email,
