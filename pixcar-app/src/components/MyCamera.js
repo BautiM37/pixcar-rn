@@ -99,7 +99,7 @@ class MyCamera extends Component {
                                 />
                                 <View>
                                     <TouchableOpacity onPress={() => this.guardarFoto()}>
-                                        <Text>Siguiente</Text>
+                                        <Text>Usar</Text>
                                     </TouchableOpacity>
 
                                     <TouchableOpacity onPress={() => this.borrarFoto()}>

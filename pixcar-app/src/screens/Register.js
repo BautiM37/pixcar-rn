@@ -2,9 +2,24 @@ import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { auth, db } from '../firebase/config.js';
+import MyCamera from '../components/MyCamera.js';
 
 // Styles
 const styles = StyleSheet.create({
+    contenedor: {
+        flex: 1,
+        width: '100vw'
+    },
+    camara: {
+        flex: 1
+    },
+    photo: {
+        width: '200px',
+        height: '200px'
+    },
+    contenedorCamara: {
+        flex: 1
+    },
     titulo: {
         backgroundColor: 'rgb(99, 166, 199)',
         margin: '1.5vw',
@@ -84,7 +99,9 @@ class Register extends Component {
             contrasena: '',
             nombreUsuario: '',
             bio: '',
-            esconderError: true
+            esconderError: true,
+            urlFoto: '',
+            showCamera: true
         }
     }
 
@@ -115,20 +132,44 @@ class Register extends Component {
                     mail: auth.currentUser.email,
                     nombre: this.state.nombreUsuario,
                     bio: this.state.bio,
-                    timestamp: Date.now()
+                    timestamp: Date.now(),
+                    foto: this.state.urlFoto
                 })
             })
-            .then(() => { this.props.navigation.navigate('Login') })
+            .then(() => { this.props.navigation.navigate('Navegador') })
             .catch(error => {
                 this.setState({ error: error.message })
             })
+        { console.log(this.state.urlFoto) }
     }
+
+    onImageUpload(url) {
+        this.setState({
+            urlFoto: url,
+            showCamera: false
+        });
+        { console.log(this.state.urlFoto) }
+    }
+
+    // NOTAS/IDEAS SOLUCION QUE NO SE UPLODEA EL URL AL FIREBASE
+    // Hay que poner algun boton de aceptar o repetir foto
 
     render() {
         return (
-            <View>
+            <View style={styles.contenedor}>
                 <Text style={styles.titulo}>¿No tenés cuenta? ¡Registrate!</Text>
-                <View>
+                <View style={styles.contenedor}>
+                    <View style={styles.contenedorCamara}>
+
+                    {
+                        this.state.showCamera == true ?
+                            <View style={styles.camara}>
+                                <MyCamera onImageUpload={(url) => this.onImageUpload(url)} style={styles.camara} />
+                            </View>
+                            :
+                            <Image style={styles.photo} source={{ uri: this.state.urlFoto }} />
+                    }
+                    </View>
                     <TextInput style={styles.inputs} maxLength='20'
                         keyboardType='default'
                         placeholder='nombre de usuario *'
@@ -138,8 +179,7 @@ class Register extends Component {
                     {
                         this.state.nombreUsuario.length < 3 ?
                             <Text style={
-                                
-                                    styles.infoMal
+                                styles.infoMal
                             }>Debe tener al menos 3 caracteres</Text>
                             :
                             <Text style={styles.infoBien}>¡Perfecto!</Text>
@@ -162,8 +202,8 @@ class Register extends Component {
                     {
                         this.state.contrasena.length < 8 ?
                             <Text style={
-                                
-                                    styles.infoMal
+
+                                styles.infoMal
                             }>Debe tener al menos 8 caracteres</Text>
                             :
                             <Text style={styles.infoBien}>¡Contraseña válida!</Text>
