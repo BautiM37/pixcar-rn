@@ -4,6 +4,9 @@ import { auth, db } from '../firebase/config';
 import Posteos from '../components/Posteos'
 
 const styles = StyleSheet.create({
+    contenido: {
+        backgroundColor: 'rgb(28, 35, 43)'
+    },
     misDatos: {
         alignItems: 'center',
         height: '300px',
@@ -90,7 +93,7 @@ class MiPerfil extends Component {
 
     render() {
         return (
-            <ScrollView>
+            <ScrollView style={styles.contenido}>
                 <View style={styles.misDatos}>
 
                 <Text style={styles.titulo}>Mi Perfil</Text>

@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, FlatList, ScrollView } from 'react-native';
 import {db} from '../firebase/config'
 import Posteos from '../components/Posteos';
+
+const styles = StyleSheet.create({
+    contenido: {
+        backgroundColor: 'rgb(28, 35, 43)'
+    }
+})
+
 class Home extends Component {
     constructor() {
         super()
@@ -28,7 +35,7 @@ class Home extends Component {
 
     render() {
         return(
-            <ScrollView>
+            <ScrollView style={styles.contenido}>
                 <Text>Posteos</Text>
                 <FlatList
                     data={this.state.posteos}

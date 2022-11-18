@@ -17,12 +17,13 @@ class Navegador extends Component {
         }
     render(){
     return (
-        <Tab.Navigator screenOptions={{
+        <Tab.Navigator
+        screenOptions={{
             tabBarShowLabel: false,
             tabBarStyle: {backgroundColor: 'rgb(230, 230, 230)'},
             headerShown: false
         }}>
-            <Tab.Screen name="Home" component= {Home} />
+            <Tab.Screen name="Home" component= {Home}/>
             <Tab.Screen name="UnPerfil" component= {MiPerfil}/>
             <Tab.Screen name="Postear" component= {Postear} />
         </Tab.Navigator>
