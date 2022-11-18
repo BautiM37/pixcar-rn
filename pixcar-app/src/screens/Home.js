@@ -10,8 +10,8 @@ const styles = StyleSheet.create({
 })
 
 class Home extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state={
             posteos : []
         }
@@ -40,7 +40,8 @@ class Home extends Component {
                 <FlatList
                     data={this.state.posteos}
                     keyExtractor={(data)=>data.id}
-                    renderItem={(item)=>(<Posteos data={item}/>)}
+                    renderItem={(item)=>(<Posteos data={item} navigation={this.props.navigation}id={item.id}/>)} 
+                    
                 ></FlatList>
 
 
