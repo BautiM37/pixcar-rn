@@ -27,35 +27,40 @@ const styles = StyleSheet.create({
     },
     username: {
         fontWeight: 'bold',
-        color: 'whitesmoke' 
+        color: 'whitesmoke'
     },
-    biografia:{
+    biografia: {
         color: 'whitesmoke'
     }
-}) 
+})
 
 class MiPerfil extends Component {
     constructor(props) {
         super(props)
         this.state = {
             posteos: [],
-            foto: '',
-            bio: '',
-            nombre: '',
-            mail: ''
+            fotoMia: '',
+            bioMia: '',
+            nombreMio: '',
+            mailMio: '',
+            posteosOtro: [],
+            fotoOtro: '',
+            bioOtro: '',
+            nombreOtro: '',
+            mailOtro: '',
         }
     }
 
     componentDidMount() {
-        this.props.route.params == undefined ?
-        this.infoPropia()
-        :
-        this.infoAjena()
+        this.props.route.params != undefined ?
+            this.infoAjena()
+            :
+            this.infoPropia()
     }
 
     // Si soy dueño del perfil...
 
-    infoPropia () {
+    infoPropia() {
         db.collection('usuarios').where('mail', '==', auth.currentUser.email).onSnapshot(
             docs => {
                 let miFoto = ''
@@ -71,10 +76,10 @@ class MiPerfil extends Component {
                     miMail = doc.data().mail
 
                     this.setState({
-                        foto: miFoto,
-                        bio: miBio,
-                        nombre: miNombre,
-                        mail: miMail
+                        fotoMia: miFoto,
+                        bioMia: miBio,
+                        nombreMio: miNombre,
+                        mailMio: miMail
                     })
                 })
             }
@@ -102,8 +107,8 @@ class MiPerfil extends Component {
 
     // Si estoy en un perfil ajeno...
 
-    infoAjena () {
-        db.collection('usuarios').where('mail', '==', this.props.route.params.email).onSnapshot(
+    infoAjena() {
+        db.collection('usuarios').where('mail', '==', this.props.route.params.usuario).onSnapshot(
             docs => {
                 let fotoAjena = ''
                 let bioAjena = ''
@@ -118,15 +123,15 @@ class MiPerfil extends Component {
                     mailAjeno = doc.data().mail
 
                     this.setState({
-                        foto: fotoAjena,
-                        bio: bioAjena,
-                        nombre: nombreAjeno,
-                        mail: mailAjeno
+                        fotoOtro: fotoAjena,
+                        bioOtro: bioAjena,
+                        nombreOtro: nombreAjeno,
+                        mailOtro: mailAjeno
                     })
                 })
             }
         )
-        db.collection('posteos').where('email', '==', this.props.route.params.email).onSnapshot(
+        db.collection('posteos').where('email', '==', this.props.route.params.usuario).onSnapshot(
             docs => {
                 let posts = [];
                 docs.forEach(doc => {
@@ -144,30 +149,55 @@ class MiPerfil extends Component {
 
     render() {
         return (
-            <ScrollView style={styles.contenido}>
-                <View style={styles.misDatos}>
+            <View>
+                {
+                    this.props.route.params != undefined ?
 
-                <Text style={styles.titulo}>Mi Perfil</Text>
-                <Image 
-                style={styles.photo} source={{ uri: this.state.foto }}
-                />
-                <Text style={styles.username}>{this.state.nombre}</Text>
-                {this.state.bio == '' ?
-                <Text></Text>
-            :
-                <Text style={styles.biografia}>{this.state.bio}</Text>
-            }
-                </View>
-                <FlatList
-                    data={this.state.posteos}
-                    keyExtractor={(data) => data.id.toString()}
-                    renderItem={(item) => (<Posteos data={item} />)}
-                ></FlatList>
-                <TouchableOpacity onPress={() => this.logout()}>
-                    <Text>Cerrar sesión</Text>
-                </TouchableOpacity>
+                        <ScrollView style={styles.contenido}>
+                            <View style={styles.misDatos}>
 
-            </ScrollView>
+                                <Text style={styles.titulo}>{this.state.nombreMio}</Text>
+                                <Image
+                                    style={styles.photo} source={{ uri: this.state.fotoMia }}
+                                />
+                                {this.state.bioMia == '' ?
+                                    <Text>No has agregado biografía todavía</Text>
+                                    :
+                                    <Text style={styles.biografia}>{this.state.bioMia}</Text>
+                                }
+                            </View>
+                            <FlatList
+                                data={this.state.posteos}
+                                keyExtractor={(data) => data.id.toString()}
+                                renderItem={(item) => (<Posteos data={item} />)}
+                            ></FlatList>
+                            <TouchableOpacity onPress={() => this.logout()}>
+                                <Text>Cerrar sesión</Text>
+                            </TouchableOpacity>
+
+                        </ScrollView>
+                        :
+                        <ScrollView style={styles.contenido}>
+                            <View style={styles.misDatos}>
+
+                                <Text style={styles.titulo}>{this.state.nombreOtro}</Text>
+                                <Image
+                                    style={styles.photo} source={{ uri: this.state.fotoOtro }}
+                                />
+                                {this.state.bioOtro == '' ?
+                                    <Text>El usuario no incluyó una biografía</Text>
+                                    :
+                                    <Text style={styles.biografia}>{this.state.bioOtro}</Text>
+                                }
+                            </View>
+                            <FlatList
+                                data={this.state.posteosOtro}
+                                keyExtractor={(data) => data.id.toString()}
+                                renderItem={(item) => (<Posteos data={item} />)}
+                            ></FlatList>
+                        </ScrollView>
+                }
+            </View>
         )
     }
 

@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import {db} from '../firebase/config'
+import {db, auth} from '../firebase/config'
 import firebase from 'firebase';
-import 'firebase/firestore'
 
 const styles = StyleSheet.create({
 
@@ -31,15 +30,29 @@ class Posteos extends Component {
 
         })
     }
+    perfilOtro(persona) {
+        this.props.navigation.navigate('Perfil', {usuario: persona})
+    }
 
     
     render() {
        let data=this.props.data.item.data
+
+       {console.log(this.props.data);}
        
         return(
             <View>
                 <Image style={styles.photo} source={{ uri: data.imagen }} />
-                <Text style={styles.Text}>Propietario del post: {data.email}</Text>
+                {this.props.data.email == auth.currentUser.email
+                        ?
+                        <Text onPress={() => this.props.navigation.navigate('Perfil')} style={styles.Text}>
+                            Propietario del post: {data.email}
+                        </Text>
+                        :
+                        <Text onPress={() => this.perfilOtro(data.email)} style={styles.Text}>
+                            Propietario del post: {data.email}
+                        </Text>
+                    }
                 <Text style={styles.Text}>Descripcion: {data.descripcion}</Text>
                 <TouchableOpacity onPress={()=>this.likear()}>
                     <Text style={styles.Text}> Añadir Like </Text>

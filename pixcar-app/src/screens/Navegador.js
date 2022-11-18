@@ -24,7 +24,7 @@ class Navegador extends Component {
             headerShown: false
         }}>
             <Tab.Screen name="Home" component= {Home}/>
-            <Tab.Screen name="UnPerfil" component= {Perfil}/>
+            <Tab.Screen name="Perfil" component= {Perfil}/>
             <Tab.Screen name="Postear" component= {Postear} />
         </Tab.Navigator>
     
