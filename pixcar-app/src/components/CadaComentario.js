@@ -20,3 +20,5 @@ class CadaComentario extends Component{
             )
         }
 }
+
+export default CadaComentario;
