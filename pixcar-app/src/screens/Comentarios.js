@@ -35,6 +35,7 @@ class Comentarios extends Component {
         .doc(this.state.id)
         .onSnapshot(
             docs => {
+                console.log(docs.data());
                 this.setState({
                     data: docs.data(),
                     comentario: docs.data().comentarios 
@@ -44,13 +45,13 @@ class Comentarios extends Component {
                
 
 
-    agregarComentario(){
+    agregarComentario(com){
         db.collection('posteos').doc(this.state.id).update({
             
             comentarios: firebase.firestore.FieldValue.arrayUnion({
             email: auth.currentUser.email, 
             createdAt: Date.now(),
-            
+            comentarioo: com,
             
         })
      })
@@ -61,7 +62,6 @@ class Comentarios extends Component {
     }
 
     render() {
-
         return(
             <View style={styles.contenedor}>
 
@@ -85,6 +85,7 @@ class Comentarios extends Component {
             </View>
                 
             </View>
+            
             )  
         }
     }
