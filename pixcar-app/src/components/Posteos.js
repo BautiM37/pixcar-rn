@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import {db} from '../firebase/config'
+import {db, auth} from '../firebase/config'
 import firebase from 'firebase';
 import 'firebase/firestore'
 
@@ -22,7 +22,7 @@ class Posteos extends Component {
     likear(){
         let posteo=db.collection('posteos').doc(this.props.data.item.id)
         posteo.update({
-            Likes: firebase.firestore.FieldValue.arrayUnion(1)
+            Likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email)
 
         })
     }
