@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator()
 
 // importar vistas
-import MiPerfil from './MiPerfil';
+import Perfil from './Perfil';
 import Home from './Home';
 import Postear from './Postear';
 
@@ -24,7 +24,7 @@ class Navegador extends Component {
             headerShown: false
         }}>
             <Tab.Screen name="Home" component= {Home}/>
-            <Tab.Screen name="UnPerfil" component= {MiPerfil}/>
+            <Tab.Screen name="UnPerfil" component= {Perfil}/>
             <Tab.Screen name="Postear" component= {Postear} />
         </Tab.Navigator>
     
