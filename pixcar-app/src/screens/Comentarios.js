@@ -3,6 +3,8 @@ import { View, Text, Image, StyleSheet, FlatList, ScrollView } from 'react-nativ
 import {auth, db} from '../firebase/config'
 import 'firebase/firestore'
 import { TextInput } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-web';
+import CadaComentario from '../components/CadaComentario';
 const styles = StyleSheet.create({
 
 contenedor: {
@@ -13,59 +15,75 @@ contenedor: {
     justifyContent: 'flex-start',
     alignItems: 'center',
 }
+
+
 })
 
 class Comentarios extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state={
             comentarios: '',
+            id: props.route.params.id,
+            data: {},
+            comentario: [],
         }
     }
 
     componentDidMount(){
-        db.collection('posteos').orderBy('createdAt', 'desc').onSnapshot(
+        db.collection('posteos')
+        .doc(this.state.id)
+        .onSnapshot(
             docs => {
-                let comentario = [];
-                docs.forEach( doc => {
-                    comentario.push ({
-                        id: doc.id,
-                        data: doc.data()
-                    })
-                    this.setState({
-                        comentarios: comentario
-                    })
+                this.setState({
+                    data: docs.data(),
+                    comentario: docs.data().comentarios 
                 })
-            }
-        )
-    }
+            })
+        }
+               
+
 
     agregarComentario(){
-        db.collection('comentarios').add({
-            email: auth.currentUser.email,
-            comentarios: this.state.comentarios,
+        db.collection('posteos').doc(this.state.id).update({
+            
+            comentarios: firebase.firestore.FieldValue.arrayUnion({
+            email: auth.currentUser.email, 
             createdAt: Date.now(),
+            
+            
         })
+     })
+     .catch(err => console.log(err))
+     this.setState({
+        comentarios: '',
+     })
     }
 
     render() {
-        let data=this.props.data.item.data
 
         return(
             <View style={styles.contenedor}>
 
-                <Text>Comentarios del posteo: {data.comentarios}</Text>
+                <Text>Comentarios del posteo:</Text>
+                <FlatList
+                data ={this.state.comentario}
+                keyExtractor= {item => item.createdAt.toString()}
+                renderItem={({item}) => <CadaComentario comentario={item}/>}/>
 
-                <TextInput 
-                maxLength= '100'
-                keyboardType='default'
-                placeholder='Comentá lo que pienses!'
-                onChangeText={text => this.setState({comentarios: text})}
-                value={this.state.comentarios}
-                />
-                <TouchableOpacity onPress={()=> this.props.navigation.navigate('Home')}>
-                    <Text>Comentar</Text>
-                </TouchableOpacity>
+            <View>
+            <TextInput
+            placeholder='¡Comenta lo que pienses!'
+            keyboardType='deafult'
+            onChangeText={ text => this.setState({comentario:text})}
+            value= {this.state.comentario}
+            />
+            <TouchableOpacity onPress={() =>this.agregarComentario(this.state.comentario)}>
+            <Text>Publicar comentario</Text>
+            </TouchableOpacity>
+    
+            </View>
+                
             </View>
             )  
         }
