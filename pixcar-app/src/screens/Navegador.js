@@ -7,6 +7,7 @@ const Tab = createBottomTabNavigator()
 import MiPerfil from './MiPerfil';
 import Home from './Home';
 import Postear from './Postear';
+import Perfil from './Perfil';
 
 class Navegador extends Component {
         constructor(){
@@ -17,13 +18,15 @@ class Navegador extends Component {
         }
     render(){
     return (
-        <Tab.Navigator screenOptions={{
+        <Tab.Navigator
+        screenOptions={{
             tabBarShowLabel: false,
             tabBarStyle: {backgroundColor: 'rgb(230, 230, 230)'},
             headerShown: false
         }}>
-            <Tab.Screen name="Home" component= {Home} />
-            <Tab.Screen name="UnPerfil" component= {MiPerfil}/>
+            <Tab.Screen name="Home" component= {Home}/>
+            <Tab.Screen name='Perfil' component={Perfil} />
+            <Tab.Screen name="MiPerfil" component= {MiPerfil}/>
             <Tab.Screen name="Postear" component= {Postear} />
         </Tab.Navigator>
     

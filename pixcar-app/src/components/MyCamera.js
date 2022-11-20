@@ -6,7 +6,8 @@ import { storage } from '../firebase/config';
 const styles = StyleSheet.create({
     contenedor: {
         flex: 1,
-        width: '100vw'
+        width: '100vw',
+        backgroundColor: 'rgb(28, 35, 43)'
     },
     cameraBody: {
         flex: 1,
