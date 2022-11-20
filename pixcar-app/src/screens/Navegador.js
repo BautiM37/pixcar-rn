@@ -8,6 +8,7 @@ import MiPerfil from './MiPerfil';
 import Home from './Home';
 import Postear from './Postear';
 import Perfil from './Perfil';
+import Buscador from './Buscador';
 
 class Navegador extends Component {
         constructor(){
@@ -16,6 +17,7 @@ class Navegador extends Component {
                 logueado : false
             }
         }
+
     render(){
     return (
         <Tab.Navigator
@@ -28,6 +30,7 @@ class Navegador extends Component {
             <Tab.Screen name='Perfil' component={Perfil} />
             <Tab.Screen name="MiPerfil" component= {MiPerfil}/>
             <Tab.Screen name="Postear" component= {Postear} />
+            <Tab.Screen name="Buscador" component= {Buscador}/>
         </Tab.Navigator>
     
     
