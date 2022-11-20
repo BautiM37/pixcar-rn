@@ -31,6 +31,14 @@ const styles = StyleSheet.create({
     },
     biografia: {
         color: 'whitesmoke'
+    },
+    mail: {
+        fontStyle: 'italic',
+        color: 'whitesmoke'
+    },
+    cerrarSesion: {
+        color: 'whitesmoke',
+        textDecorationLine: 'underline'
     }
 })
 
@@ -77,7 +85,6 @@ class MiPerfil extends Component {
             docs => {
                 let posts = [];
                 docs.forEach(doc => {
-                    console.log(doc.id);
                     posts.push({
                         id: doc.id,
                         data: doc.data()
@@ -101,22 +108,31 @@ class MiPerfil extends Component {
                 <View style={styles.misDatos}>
 
                     <Text style={styles.titulo}>{this.state.nombreMio}</Text>
-                    <Image
-                        style={styles.photo} source={{ uri: this.state.fotoMia }}
-                    />
+                    {
+                        this.state.fotoMia != undefined ?
+                            <Image
+                                style={styles.photo} source={{ uri: this.state.fotoMia }}
+                            />
+                            :
+                            <Image
+                                style={styles.photo} source={require('../../assets/sinFoto.png')}
+                            />
+                    }
+                    <Text style={styles.mail}>{this.state.mailMio}</Text>
                     {this.state.bioMia == '' ?
                         <Text>No has agregado biografía todavía</Text>
                         :
                         <Text style={styles.biografia}>{this.state.bioMia}</Text>
                     }
                 </View>
+                <Text style={styles.mail}>{this.state.posteos.length} posteos</Text>
                 <FlatList
                     data={this.state.posteos}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={(data) => (<Posteos data={data.item.data} navigation={this.props.navigation} id={data.item.id} />)}
                 ></FlatList>
                 <TouchableOpacity onPress={() => this.logout()}>
-                    <Text>Cerrar sesión</Text>
+                    <Text style={styles.cerrarSesion}>Cerrar sesión</Text>
                 </TouchableOpacity>
             </ScrollView>
         )

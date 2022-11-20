@@ -31,6 +31,10 @@ const styles = StyleSheet.create({
     },
     biografia: {
         color: 'whitesmoke'
+    },
+    mail: {
+        fontStyle: 'italic',
+        color: 'whitesmoke'
     }
 })
 
@@ -66,7 +70,6 @@ class Perfil extends Component {
                 let mailAjeno = ''
 
                 docs.forEach(doc => {
-                    console.log(doc);
                     fotoAjena = doc.data().foto
                     bioAjena = doc.data().bio
                     nombreAjeno = doc.data().nombre
@@ -85,7 +88,6 @@ class Perfil extends Component {
             docs => {
                 let posts = [];
                 docs.forEach(doc => {
-                    console.log(doc);
                     posts.push({
                         id: doc.id,
                         data: doc.data()
@@ -99,21 +101,29 @@ class Perfil extends Component {
     }
 
     render() {
-        console.log(this.props.route);
         return (
             <ScrollView style={styles.contenido}>
                 <View style={styles.misDatos}>
 
                     <Text style={styles.titulo}>{this.state.nombreOtro}</Text>
-                    <Image
-                        style={styles.photo} source={{ uri: this.state.fotoOtro }}
-                    />
+                    {
+                        this.state.fotoOtro != undefined ?
+                            <Image
+                                style={styles.photo} source={{ uri: this.state.fotoOtro }}
+                            />
+                            :
+                            <Image
+                                style={styles.photo} source={require('../../assets/sinFoto.png')}
+                            />
+                    }
+                    <Text style={styles.mail}>{this.state.mailOtro}</Text>
                     {this.state.bioOtro == '' ?
                         <Text>El usuario no incluyó una biografía</Text>
                         :
                         <Text style={styles.biografia}>{this.state.bioOtro}</Text>
                     }
                 </View>
+                <Text style={styles.mail}>{this.state.posteosOtro.length} posteos</Text>
                 <FlatList
                     data={this.state.posteosOtro}
                     keyExtractor={(item) => item.id.toString()}
