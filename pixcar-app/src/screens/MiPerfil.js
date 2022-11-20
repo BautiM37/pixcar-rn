@@ -34,95 +34,94 @@ const styles = StyleSheet.create({
     }
 })
 
-class Perfil extends Component {
+class MiPerfil extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            posteosOtro: [],
-            fotoOtro: '',
-            bioOtro: '',
-            nombreOtro: '',
-            mailOtro: ''
+            posteos: [],
+            fotoMia: '',
+            bioMia: '',
+            nombreMio: '',
+            mailMio: ''
         }
     }
 
     componentDidMount() {
-        this.cargarDatos()
-        console.log(this.props.data);
+        this.infoPropia()
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.route.params.usuario != prevProps.route.params.usuario) {
-            this.cargarDatos()
-        }
-    }
-
-    cargarDatos() {
-        db.collection('usuarios').where('mail', '==', this.props.route.params.usuario).onSnapshot(
+    infoPropia() {
+        db.collection('usuarios').where('mail', '==', auth.currentUser.email).onSnapshot(
             docs => {
-                let fotoAjena = ''
-                let bioAjena = ''
-                let nombreAjeno = ''
-                let mailAjeno = ''
+                let miFoto = ''
+                let miBio = ''
+                let miNombre = ''
+                let miMail = ''
 
                 docs.forEach(doc => {
-                    console.log(doc);
-                    fotoAjena = doc.data().foto
-                    bioAjena = doc.data().bio
-                    nombreAjeno = doc.data().nombre
-                    mailAjeno = doc.data().mail
+                    miFoto = doc.data().foto
+                    miBio = doc.data().bio
+                    miNombre = doc.data().nombre
+                    miMail = doc.data().mail
 
                     this.setState({
-                        fotoOtro: fotoAjena,
-                        bioOtro: bioAjena,
-                        nombreOtro: nombreAjeno,
-                        mailOtro: mailAjeno
+                        fotoMia: miFoto,
+                        bioMia: miBio,
+                        nombreMio: miNombre,
+                        mailMio: miMail
                     })
                 })
             }
         )
-        db.collection('posteos').where('email', '==', this.props.route.params.usuario).onSnapshot(
+        db.collection('posteos').where('email', '==', auth.currentUser.email).onSnapshot(
             docs => {
                 let posts = [];
                 docs.forEach(doc => {
-                    console.log(doc);
+                    console.log(doc.id);
                     posts.push({
                         id: doc.id,
                         data: doc.data()
                     })
                     this.setState({
-                        posteosOtro: posts
+                        posteos: posts
                     })
                 })
             }
         )
     }
 
+    logout() {
+        auth.signOut()
+        this.props.navigation.navigate('Login')
+    }
+
     render() {
-        console.log(this.props.route);
         return (
             <ScrollView style={styles.contenido}>
                 <View style={styles.misDatos}>
 
-                    <Text style={styles.titulo}>{this.state.nombreOtro}</Text>
+                    <Text style={styles.titulo}>{this.state.nombreMio}</Text>
                     <Image
-                        style={styles.photo} source={{ uri: this.state.fotoOtro }}
+                        style={styles.photo} source={{ uri: this.state.fotoMia }}
                     />
-                    {this.state.bioOtro == '' ?
-                        <Text>El usuario no incluyó una biografía</Text>
+                    {this.state.bioMia == '' ?
+                        <Text>No has agregado biografía todavía</Text>
                         :
-                        <Text style={styles.biografia}>{this.state.bioOtro}</Text>
+                        <Text style={styles.biografia}>{this.state.bioMia}</Text>
                     }
                 </View>
                 <FlatList
-                    data={this.state.posteosOtro}
+                    data={this.state.posteos}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={(data) => (<Posteos data={data.item.data} navigation={this.props.navigation} id={data.item.id} />)}
                 ></FlatList>
+                <TouchableOpacity onPress={() => this.logout()}>
+                    <Text>Cerrar sesión</Text>
+                </TouchableOpacity>
             </ScrollView>
         )
     }
 
 }
 
-export default Perfil;
+export default MiPerfil;

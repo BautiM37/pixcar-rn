@@ -22,7 +22,7 @@ class Posteos extends Component {
     constructor(props) {
         super(props)
         this.state={
-        paraComentar: props.data.comentarios.length,
+            
         }
     }
     likear(){
@@ -38,18 +38,19 @@ class Posteos extends Component {
 
     
     render() {
-       let data=this.props.data
-       console.log(this.props);
+
+       let data = this.props.data
+
         return(
             <View>
                 <Image style={styles.photo} source={{ uri: data.imagen }} />
-                {this.props.data.email == auth.currentUser.email
+                {data.email == auth.currentUser.email
                         ?
-                        <Text onPress={() => this.props.navigation.navigate('Perfil')} style={styles.Text}>
+                        <Text onPress={() => this.props.navigation.navigate('MiPerfil')} style={styles.Text}>
                             Propietario del post: {data.email}
                         </Text>
                         :
-                        <Text onPress={() => this.perfilOtro(data.email)} style={styles.Text}>
+                        <Text onPress={() => this.perfilOtro(this.props.data.email)} style={styles.Text}>
                             Propietario del post: {data.email}
                         </Text>
                     }
@@ -59,9 +60,9 @@ class Posteos extends Component {
                 </TouchableOpacity>
                 <View>
                 {
-                    this.state.paraComentar >= 1 ?
+                    data != undefined  ?
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Comentarios', {id:this.props.id})}>
-                <Text style={styles.Text}>Comentarios: {this.state.paraComentar}</Text>
+                <Text style={styles.Text}>Comentarios: {}</Text>
                
                 </TouchableOpacity> :
                 
