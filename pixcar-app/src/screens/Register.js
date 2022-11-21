@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { auth, db } from '../firebase/config.js';
-import MyCamera from '../components/MyCamera.js';
+import { auth, db, storage } from '../firebase/config.js';
+import { Camera } from 'expo-camera';
 
 // Styles
 const styles = StyleSheet.create({
@@ -12,6 +12,21 @@ const styles = StyleSheet.create({
     },
     camara: {
         flex: 1
+    },
+    cameraBody: {
+        flex: 1,
+        height: '400px',
+        width: '400px',
+    },
+    cont: {
+        flex: 1
+    },
+    boton: {
+        flex: 1
+    },
+    input: {
+        width: '100%',
+        textAlign: 'center'
     },
     photo: {
         width: '200px',
@@ -101,8 +116,10 @@ class Register extends Component {
             bio: '',
             esconderError: true,
             urlFoto: '',
-            showCamera: true
+            showCamera: true,
+            permisos: false,
         }
+        this.metodosDeCamara = undefined
     }
 
     componentDidMount() {
@@ -114,6 +131,16 @@ class Register extends Component {
                 this.props.navigation.navigate('Navegador')
             }
         })
+        Camera.requestCameraPermissionsAsync()
+            .then(() => {
+                this.setState({
+                    permisos: true,
+                })
+            })
+            .catch(error => {
+                this.setState({ error: error.message }),
+                    console.log(error)
+            })
     }
 
     camposObligatorios() {
@@ -128,6 +155,7 @@ class Register extends Component {
         auth.createUserWithEmailAndPassword(this.state.email, this.state.contrasena)
             .then(response => {
                 this.setState({ registrado: true });
+                console.log(this.state.urlFoto);
                 db.collection('usuarios').add({
                     mail: auth.currentUser.email,
                     nombre: this.state.nombreUsuario,
@@ -136,23 +164,66 @@ class Register extends Component {
                     foto: this.state.urlFoto
                 })
             })
-            .then(() => { this.props.navigation.navigate('Navegador') })
+            .then(() => this.guardarFoto())
             .catch(error => {
                 this.setState({ error: error.message })
             })
-        { console.log(this.state.urlFoto) }
     }
 
     onImageUpload(url) {
+        console.log(url);
         this.setState({
             urlFoto: url,
             showCamera: false
         });
-        { console.log(this.state.urlFoto) }
     }
 
-    // NOTAS/IDEAS SOLUCION QUE NO SE UPLODEA EL URL AL FIREBASE
-    // Hay que poner algun boton de aceptar o repetir foto
+    // subirImagen() {
+    //     db.collection('usuarios').where('mail', '==', this.state.email).update({
+    //         foto: this.state.urlFoto
+    //     })
+
+    //         .catch(error => {
+    //             this.setState({ error: error.message })
+    //         })
+    // }
+
+    borrarFoto() {
+        this.setState({
+            urlFoto: '',
+            showCamera: true
+        })
+    }
+
+    guardarFoto() {
+        fetch(this.state.urlFoto)
+            .then(res => res.blob())
+            .then(image => {
+                const ref = storage.ref(`photos/${Date.now()}.jpg`)
+                ref.put(image)
+                    .then(() => {
+                        ref.getDownloadURL()
+                            .then(url => {
+                                this.onImageUpload(url);
+                            })
+                    })
+            })
+            .then(() => { this.props.navigation.navigate('Navegador') })
+            .catch(error => {
+                this.setState({ error: error.message }),
+                    console.log(error)
+            })
+    }
+
+    tomarFoto() {
+        this.metodosDeCamara.takePictureAsync()
+            .then(photo => {
+                this.setState({
+                    urlFoto: photo.uri, //Es una uri interna temporal de la foto.
+                    showCamera: false
+                })
+            })
+    }
 
     render() {
         return (
@@ -161,14 +232,38 @@ class Register extends Component {
                 <View style={styles.contenedor}>
                     <View style={styles.contenedorCamara}>
 
-                    {
-                        this.state.showCamera == true ?
-                            <View style={styles.camara}>
-                                <MyCamera onImageUpload={(url) => this.onImageUpload(url)} style={styles.camara} />
-                            </View>
-                            :
-                            <Image style={styles.photo} source={{ uri: this.state.urlFoto }} />
-                    }
+                        <View style={styles.contenedor}>
+
+                            {
+                                this.state.permisos == true ?
+                                    this.state.showCamera == false ?
+                                        <View style={styles.cont}>
+                                            <Image
+                                                style={styles.cameraBody}
+                                                source={{ uri: this.state.urlFoto }}
+                                            />
+
+                                            <TouchableOpacity onPress={() => this.borrarFoto()}>
+                                                <Text>Borrar</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        :
+                                        <View style={styles.cont}>
+                                            <Camera
+                                                style={styles.cameraBody}
+                                                type={Camera.Constants.Type.front}
+                                                ref={(metodos) => this.metodosDeCamara = metodos}
+                                            />
+                                            <View style={styles.boton}>
+                                                <TouchableOpacity onPress={() => this.tomarFoto()}>
+                                                    <Text>Tomar foto</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    :
+                                    <Text>Habilitá la camara desde los ajustes de tu smartphone</Text>
+                            }
+                        </View>
                     </View>
                     <TextInput style={styles.inputs} maxLength='20'
                         keyboardType='default'

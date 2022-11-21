@@ -120,7 +120,7 @@ class MiPerfil extends Component {
                     }
                     <Text style={styles.mail}>{this.state.mailMio}</Text>
                     {this.state.bioMia == '' ?
-                        <Text>No has agregado biografía todavía</Text>
+                        <Text style={styles.mail}>No has agregado biografía todavía</Text>
                         :
                         <Text style={styles.biografia}>{this.state.bioMia}</Text>
                     }
