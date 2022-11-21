@@ -124,11 +124,16 @@ class Perfil extends Component {
                     }
                 </View>
                 <Text style={styles.mail}>{this.state.posteosOtro.length} posteos</Text>
-                <FlatList
-                    data={this.state.posteosOtro}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={(data) => (<Posteos data={data.item.data} navigation={this.props.navigation} id={data.item.id} />)}
-                ></FlatList>
+                {
+                    this.state.posteosOtro.length == 0 ?
+                        <Text style={styles.mail}>{this.state.nombreOtro} todavía no tiene posteos.</Text>
+                        :
+                        <FlatList
+                            data={this.state.posteosOtro}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={(data) => (<Posteos data={data.item.data} navigation={this.props.navigation} id={data.item.id} />)}
+                        ></FlatList>
+                }
             </ScrollView>
         )
     }

@@ -126,11 +126,16 @@ class MiPerfil extends Component {
                     }
                 </View>
                 <Text style={styles.mail}>{this.state.posteos.length} posteos</Text>
-                <FlatList
-                    data={this.state.posteos}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={(data) => (<Posteos data={data.item.data} navigation={this.props.navigation} id={data.item.id} />)}
-                ></FlatList>
+                {
+                    this.state.posteos.length == 0 ?
+                        <Text style={styles.mail}>No tenés posteos. ¿Qué esperás para crear tu primero?</Text>
+                        :
+                        <FlatList
+                            data={this.state.posteos}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={(data) => (<Posteos data={data.item.data} navigation={this.props.navigation} id={data.item.id} />)}
+                        ></FlatList>
+                }
                 <TouchableOpacity onPress={() => this.logout()}>
                     <Text style={styles.cerrarSesion}>Cerrar sesión</Text>
                 </TouchableOpacity>

@@ -178,16 +178,6 @@ class Register extends Component {
         });
     }
 
-    // subirImagen() {
-    //     db.collection('usuarios').where('mail', '==', this.state.email).update({
-    //         foto: this.state.urlFoto
-    //     })
-
-    //         .catch(error => {
-    //             this.setState({ error: error.message })
-    //         })
-    // }
-
     borrarFoto() {
         this.setState({
             urlFoto: '',
@@ -230,6 +220,9 @@ class Register extends Component {
             <View style={styles.contenedor}>
                 <Text style={styles.titulo}>¿No tenés cuenta? ¡Registrate!</Text>
                 <View style={styles.contenedor}>
+
+                    {/* COMIENZO CAMARA */}
+
                     <View style={styles.contenedorCamara}>
 
                         <View style={styles.contenedor}>
@@ -265,6 +258,9 @@ class Register extends Component {
                             }
                         </View>
                     </View>
+
+                    {/* FIN CAMARA, COMIENZO INPUT USERNAME */}
+
                     <TextInput style={styles.inputs} maxLength='20'
                         keyboardType='default'
                         placeholder='nombre de usuario *'
@@ -272,13 +268,18 @@ class Register extends Component {
                         value={this.state.nombreUsuario}
                     />
                     {
-                        this.state.nombreUsuario.length < 3 ?
-                            <Text style={
-                                styles.infoMal
-                            }>Debe tener al menos 3 caracteres</Text>
+                        this.state.nombreUsuario.length == 0 ?
+                            <Text style={styles.infoMal}>Completá este campo</Text>
                             :
-                            <Text style={styles.infoBien}>¡Perfecto!</Text>
+                            this.state.nombreUsuario.length < 3 ?
+                                <Text style={
+                                    styles.infoMal
+                                }>Debe tener al menos 3 caracteres</Text>
+                                :
+                                <Text style={styles.infoBien}>¡Perfecto!</Text>
                     }
+
+                    {/* COMIENZO INPUT EMAIL */}
                     <TextInput style={styles.inputs}
                         keyboardType='email-address'
                         placeholder='email *'
@@ -287,6 +288,14 @@ class Register extends Component {
                         }}
                         value={this.state.email}
                     />
+                    {
+                        this.state.email.length == 0 ?
+                            <Text style={styles.infoMal}>Completá este campo</Text>
+                            :
+                            <Text style={styles.infoBien}>¡Perfecto!</Text>
+                    }
+
+                    {/* COMIENZO INPUT CONTRASEÑA */}
                     <TextInput style={styles.inputs}
                         keyboardType='default'
                         placeholder='contraseña *'
@@ -295,20 +304,26 @@ class Register extends Component {
                         value={this.state.contrasena}
                     />
                     {
-                        this.state.contrasena.length < 8 ?
-                            <Text style={
-
-                                styles.infoMal
-                            }>Debe tener al menos 8 caracteres</Text>
+                        this.state.contrasena.length == 0 ?
+                            <Text style={styles.infoMal}>Completá este campo</Text>
                             :
-                            <Text style={styles.infoBien}>¡Contraseña válida!</Text>
+                            this.state.contrasena.length < 8 ?
+                                <Text style={
+
+                                    styles.infoMal
+                                }>Debe tener al menos 8 caracteres</Text>
+                                :
+                                <Text style={styles.infoBien}>¡Contraseña válida!</Text>
                     }
+
+                    {/* COMIENZO INPUT BIOGRAFÍA */}
                     <TextInput style={styles.inputs} maxLength='45'
                         keyboardType='default'
                         placeholder='¡algo breve acerca tuyo!'
                         onChangeText={text => this.setState({ bio: text })}
                         value={this.state.bio}
                     />
+                    
                     <Text style={styles.asterisco}>*campo obligatorio</Text>
                     {
                         this.state.error.length != 0 ?
