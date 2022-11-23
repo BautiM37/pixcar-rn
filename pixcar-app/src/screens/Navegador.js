@@ -7,7 +7,6 @@ const Tab = createBottomTabNavigator()
 import MiPerfil from './MiPerfil';
 import Home from './Home';
 import Postear from './Postear';
-import Perfil from './Perfil';
 import Buscador from './Buscador';
 
 class Navegador extends Component {
@@ -27,7 +26,6 @@ class Navegador extends Component {
             headerShown: false
         }}>
             <Tab.Screen name="Home" component= {Home}/>
-            <Tab.Screen name='Perfil' component={Perfil} />
             <Tab.Screen name="MiPerfil" component= {MiPerfil}/>
             <Tab.Screen name="Postear" component= {Postear} />
             <Tab.Screen name="Buscador" component= {Buscador}/>
