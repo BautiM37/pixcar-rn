@@ -173,6 +173,17 @@ class MiPerfil extends Component {
     logout() {
         auth.signOut()
         this.props.navigation.navigate('Login')
+        .catch(error => {
+            this.setState({ error: error.message })
+        })
+    }
+
+    eliminarUsuario() {
+        auth.currentUser.email.delete()
+        this.props.navigation.navigate('Login')
+        .catch(error => {
+            this.setState({ error: error.message })
+        })
     }
 
     render() {
