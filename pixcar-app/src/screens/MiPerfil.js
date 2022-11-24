@@ -173,17 +173,11 @@ class MiPerfil extends Component {
     logout() {
         auth.signOut()
         this.props.navigation.navigate('Login')
-        .catch(error => {
-            this.setState({ error: error.message })
-        })
     }
 
     eliminarUsuario() {
-        auth.currentUser.email.delete()
+        auth.currentUser.delete()
         this.props.navigation.navigate('Login')
-        .catch(error => {
-            this.setState({ error: error.message })
-        })
     }
 
     render() {
@@ -348,6 +342,9 @@ class MiPerfil extends Component {
                 }
                 <TouchableOpacity onPress={() => this.logout()}>
                     <Text style={styles.cerrarSesion}>Cerrar sesión</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.eliminarUsuario()}>
+                    <Text style={styles.cerrarSesion}>Eliminar usuario</Text>
                 </TouchableOpacity>
             </ScrollView>
         )
