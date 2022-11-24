@@ -52,7 +52,6 @@ class Perfil extends Component {
 
     componentDidMount() {
         this.cargarDatos()
-        console.log(this.props.data);
     }
 
     componentDidUpdate(prevProps) {
