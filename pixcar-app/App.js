@@ -22,10 +22,11 @@ export default function App() {
         <Stack.Screen name='Login' component={Login} options={{headerShown: false, contentStyle: {backgroundColor: 'rgb(28, 35, 43)'}}}/>
         <Stack.Screen name='Register' component={Register} options={{headerShown: false, contentStyle: {backgroundColor: 'rgb(28, 35, 43)'}}}/>
         <Stack.Screen name='Navegador' component={Navegador} options={{headerShown: false}}/>
-        <Stack.Screen name='MiPerfil' component={MiPerfil} options={{headerShown:false}} />
         <Stack.Screen name='Perfil' component={Perfil} options={{headerShown: false}}/>
-        <Stack.Screen name='Comentarios' component={Comentarios} options={{headreShown: false}}/>
-        <Stack.Screen name='Home' component={Home} options={{headreShown: false}}/>
+        <Stack.Screen name='MiPerfil' component={MiPerfil} options={{headerShown:false}} />
+        <Stack.Screen name='Comentarios' component={Comentarios} options={{headerShown: false}}/>
+        <Stack.Screen name='Home' component={Home} options={{headerShown: false}}/>
+
       </Stack.Navigator>
     </NavigationContainer>
   );

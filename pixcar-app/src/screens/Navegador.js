@@ -24,7 +24,7 @@ class Navegador extends Component {
         screenOptions={{
             tabBarShowLabel: false,
             tabBarStyle: {backgroundColor: 'rgb(230, 230, 230)'},
-            headerShown: false
+            headerShown: false,
         }}>
             <Tab.Screen name="Home" component= {Home}/>
             <Tab.Screen name='Perfil' component={Perfil} />
