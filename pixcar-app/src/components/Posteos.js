@@ -28,6 +28,9 @@ class Posteos extends Component {
     likear() {
         let posteo = db.collection('posteos').doc(this.props.data.id)
         posteo.update({
+            // FieldValue chequea que sea un array
+            // arrayUnion es un metodo de firebase asociado a la base de datos, firestore
+            // arrayUnion permite agregar un item a un array de firestore, solo si no está presente todavía
             Likes: firebase.firestore.FieldValue.arrayUnion(1)
 
         })

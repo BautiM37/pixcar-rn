@@ -153,9 +153,9 @@ class Register extends Component {
 
     registro() {
         auth.createUserWithEmailAndPassword(this.state.email, this.state.contrasena)
+            .then(() => this.guardarFoto())
             .then(response => {
                 this.setState({ registrado: true });
-                console.log(this.state.urlFoto);
                 db.collection('usuarios').add({
                     mail: auth.currentUser.email,
                     nombre: this.state.nombreUsuario,
@@ -164,7 +164,6 @@ class Register extends Component {
                     foto: this.state.urlFoto
                 })
             })
-            .then(() => this.guardarFoto())
             .catch(error => {
                 this.setState({ error: error.message })
             })
