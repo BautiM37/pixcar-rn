@@ -10,19 +10,25 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100vw'
     },
+    contenedor2: {
+        height: '200px',
+        width: '100vw',
+        alignItems: 'center'
+    },
     camara: {
-        flex: 1
+        height: '200px'
     },
     cameraBody: {
-        flex: 1,
-        height: '400px',
-        width: '400px',
+        height: '200px',
+        width: '200px',
     },
     cont: {
-        flex: 1
+        height: '200px',
+        margin: '1.5vw',
+        textAlign: 'center',
     },
     boton: {
-        flex: 1
+        height: '15px'
     },
     input: {
         width: '100%',
@@ -33,28 +39,31 @@ const styles = StyleSheet.create({
         height: '200px'
     },
     contenedorCamara: {
-        flex: 1
+        height: '200px'
     },
-    titulo: {
-        backgroundColor: 'rgb(99, 166, 199)',
+    textoImp: {
+        backgroundColor: 'rgb(0, 193, 203)',
         margin: '1.5vw',
         borderRadius: '5px',
         padding: '5vw',
         textAlign: 'center',
-        fontWeight: 'bold',
-        marginBottom: '20px'
+        marginBottom: '20px',
+        border: '2px solid black',
+        fontWeight: 'bold'
     },
     inputs: {
-        backgroundColor: 'rgb(137, 180, 201)',
+        border: 'solid 3px rgb(0, 193, 203)',
+        backgroundColor: 'rgb(0, 0, 0)',
+        color: 'rgb(0, 193, 203)',
         margin: '1.5vw',
         borderRadius: '5px',
         padding: '2.5vw',
     },
     infoMal: {
+        color: 'red',
         margin: '1.5vw',
         marginTop: '5px',
-        marginBottom: '5px',
-        fontStyle: 'italic'
+        marginBottom: '5px'
     },
     infoBien: {
         color: 'green',
@@ -64,12 +73,6 @@ const styles = StyleSheet.create({
     },
     ocultarInfo: {
         display: 'none'
-    },
-    asterisco: {
-        marginLeft: '2vw',
-        fontStyle: 'italic',
-        marginTop: '5px',
-        marginBottom: '5px'
     },
     error: {
         textAlign: 'center',
@@ -89,7 +92,7 @@ const styles = StyleSheet.create({
         marginBottom: '20px'
     },
     botonRegistro: {
-        backgroundColor: 'rgb(99, 166, 199)',
+        backgroundColor: 'rgb(0, 193, 203)',
         margin: '1.5vw',
         borderRadius: '5px',
         padding: '5vw',
@@ -100,7 +103,15 @@ const styles = StyleSheet.create({
         marginLeft: '25vw'
     },
     botonLink: {
-        marginLeft: '33vw'
+        marginLeft: '33vw',
+        marginTop: '-10px'
+    },
+    texto: {
+        color: 'rgb(0, 0, 0)',
+        fontWeight: 'bold'
+    },
+    textoBoton: {
+        color: 'rgb(0, 193, 203)',
     }
 })
 
@@ -217,14 +228,14 @@ class Register extends Component {
     render() {
         return (
             <View style={styles.contenedor}>
-                <Text style={styles.titulo}>¿No tenés cuenta? ¡Registrate!</Text>
+                <Text style={styles.textoImp}>¿No tenés cuenta? ¡Registrate!</Text>
                 <View style={styles.contenedor}>
 
                     {/* COMIENZO CAMARA */}
 
                     <View style={styles.contenedorCamara}>
 
-                        <View style={styles.contenedor}>
+                        <View style={styles.contenedor2}>
 
                             {
                                 this.state.permisos == true ?
@@ -236,7 +247,7 @@ class Register extends Component {
                                             />
 
                                             <TouchableOpacity onPress={() => this.borrarFoto()}>
-                                                <Text>Borrar</Text>
+                                                <Text style={styles.textoBoton}>Borrar</Text>
                                             </TouchableOpacity>
                                         </View>
                                         :
@@ -248,7 +259,7 @@ class Register extends Component {
                                             />
                                             <View style={styles.boton}>
                                                 <TouchableOpacity onPress={() => this.tomarFoto()}>
-                                                    <Text>Tomar foto</Text>
+                                                    <Text style={styles.textoBoton}>Tomar foto</Text>
                                                 </TouchableOpacity>
                                             </View>
                                         </View>
@@ -322,8 +333,6 @@ class Register extends Component {
                         onChangeText={text => this.setState({ bio: text })}
                         value={this.state.bio}
                     />
-                    
-                    <Text style={styles.asterisco}>*campo obligatorio</Text>
                     {
                         this.state.error.length != 0 ?
                             <Text style={styles.error}>Error: {this.state.error}</Text>
@@ -332,11 +341,11 @@ class Register extends Component {
                     }
 
                     <TouchableOpacity onPress={() => this.camposObligatorios()} disabled={this.state.email == '' || this.state.contrasena.length < 8 || this.state.nombreUsuario.length < 3 ? true : false} style={styles.botonRegistro}>
-                        <Text>¡Registrame!</Text>
+                        <Text style={styles.texto}>¡Registrame!</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')} style={styles.botonLink}>
-                        <Text>Ya tengo una cuenta</Text>
+                        <Text style={styles.textoBoton}>Ya tengo una cuenta</Text>
                     </TouchableOpacity>
 
                 </View>

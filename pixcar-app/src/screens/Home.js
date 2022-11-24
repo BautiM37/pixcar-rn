@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, FlatList, ScrollView } from 'react-native';
 import {db} from '../firebase/config'
 import Posteos from '../components/Posteos';
+import HeaderLogo from '../components/HeaderLogo'
 
 const styles = StyleSheet.create({
     contenido: {
@@ -36,7 +37,7 @@ class Home extends Component {
     render() {
         return(
             <ScrollView style={styles.contenido}>
-                <Text>Posteos</Text>
+                <HeaderLogo />
                 <FlatList
                     data={this.state.posteos}
                     keyExtractor={(item)=>item.id.toString()}

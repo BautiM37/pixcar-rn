@@ -8,9 +8,8 @@ import Register from './src/screens/Register';
 
 // importar Tab Navigator
 import Navegador from './src/screens/Navegador';
-import Perfil from './src/screens/Perfil';
+import StackHome from './src/screens/StackHome';
 import Comentarios from './src/screens/Comentarios';
-import Home from './src/screens/Home';
 import MiPerfil from './src/screens/MiPerfil';
 import Buscador from './src/screens/Buscador';
 import StackPerfilOtro from './src/screens/StackPerfilOtro';
@@ -26,9 +25,9 @@ export default function App() {
         <Stack.Screen name='Navegador' component={Navegador} options={{headerShown: false}}/>
         <Stack.Screen name='MiPerfil' component={MiPerfil} options={{headerShown:false}} />
         <Stack.Screen name='Comentarios' component={Comentarios} options={{headerShown: false}}/>
-        <Stack.Screen name='Home' component={Home} options={{headerShown: false}}/>
         <Stack.Screen name='Buscador' component={Buscador} options={{headerShown: false}}/>
         <Stack.Screen name='StackPerfilOtro' component={StackPerfilOtro} options={{headerShown: false}}/>
+        <Stack.Screen name='StackHome' component={StackHome} options={{headerShown: false}}/>
 
       </Stack.Navigator>
     </NavigationContainer>

@@ -10,9 +10,6 @@ const styles = StyleSheet.create({
         top: '45vw',
         width: '100vw'
     },
-    header: {
-
-    },
     inputs: {
         border: 'solid 3px rgb(0, 193, 203)',
         backgroundColor: 'rgb(0, 0, 0)',
@@ -128,7 +125,7 @@ class Login extends Component {
     render() {
         return (
             <View style={styles.contenedor}>
-                <HeaderLogo style={styles.header} />
+                <HeaderLogo />
                 <View>
                     <TextInput style={styles.inputs}
                         keyboardType='email-address'

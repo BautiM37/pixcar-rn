@@ -5,7 +5,7 @@ const Tab = createBottomTabNavigator()
 
 // importar vistas
 import MiPerfil from './MiPerfil';
-import Home from './Home';
+import StackHome from './StackHome';
 import Postear from './Postear';
 import StackPerfilOtro from './StackPerfilOtro';
 
@@ -25,7 +25,7 @@ class Navegador extends Component {
             tabBarStyle: {backgroundColor: 'rgb(230, 230, 230)'},
             headerShown: false,
         }}>
-            <Tab.Screen name="Home" component= {Home}/>
+            <Tab.Screen name="StackHome" component= {StackHome}/>
             <Tab.Screen name="MiPerfil" component= {MiPerfil}/>
             <Tab.Screen name="Postear" component= {Postear} />
             <Tab.Screen name="StackPerfilOtro" component= {StackPerfilOtro}/>

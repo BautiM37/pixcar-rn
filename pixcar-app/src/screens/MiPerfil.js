@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, FlatList, ScrollView, 
 import { auth, db } from '../firebase/config';
 import firebase from 'firebase';
 import Posteos from '../components/Posteos';
+import { Entypo } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
     contenido: {
@@ -10,7 +11,7 @@ const styles = StyleSheet.create({
     },
     misDatos: {
         alignItems: 'center',
-        height: '600px',
+        height: '500px',
         backgroundColor: 'rgb(0, 0, 0)',
         marginBottom: '70px',
     },
@@ -38,8 +39,8 @@ const styles = StyleSheet.create({
         color: 'whitesmoke'
     },
     cerrarSesion: {
-        color: 'whitesmoke',
-        textDecorationLine: 'underline'
+        color: 'rgb(0, 0, 0)',
+        fontWeight: 'bold'
     },
     inputs: {
         backgroundColor: 'rgb(137, 180, 201)',
@@ -52,7 +53,18 @@ const styles = StyleSheet.create({
     },
     nada: {
 
-    }
+    },
+    botones: {
+        backgroundColor: 'rgb(0, 193, 203)',
+        margin: '1.5vw',
+        borderRadius: '5px',
+        padding: '3vw',
+        textAlign: 'center',
+        marginBottom: '10px',
+        width: '50vw',
+        border: '2px solid black',
+        marginLeft: '25vw'
+    },
 })
 
 class MiPerfil extends Component {
@@ -191,15 +203,15 @@ class MiPerfil extends Component {
                             styles.titulo
                             :
                             styles.esconder
-                    }>{this.state.nombreMio}</Text>
-                    <TouchableOpacity onPress={() => this.nuevoNombre()} style={
+                    }>{this.state.nombreMio} <TouchableOpacity onPress={() => this.nuevoNombre()} style={
                         this.state.cambioNombre == false ?
                             styles.nada
                             :
                             styles.esconder
                     }>
-                        <Text style={styles.mail}>Actualizar nombre</Text>
-                    </TouchableOpacity>
+                        <Entypo name="new-message" size={24} color="rgb(0, 193, 203)"/>
+                    </TouchableOpacity></Text>
+                    
                     {
                         this.state.cambioNombre == false ?
                             <></>
@@ -248,14 +260,28 @@ class MiPerfil extends Component {
                                     styles.biografia
                                     :
                                     styles.esconder
-                            }>No has agregado biografía todavía</Text>
+                            }>No has agregado biografía todavía <TouchableOpacity onPress={() => this.nuevaBio()} style={
+                                this.state.cambioBio == false ?
+                                    styles.nada
+                                    :
+                                    styles.esconder
+                            }>
+                                <Entypo name="new-message" size={16} color="rgb(0, 193, 203)"/>
+                            </TouchableOpacity></Text>
                             :
                             <Text style={
                                 this.state.cambioBio == false ?
                                     styles.biografia
                                     :
                                     styles.esconder
-                            }>{this.state.bioMia}</Text>
+                            }>{this.state.bioMia} <TouchableOpacity onPress={() => this.nuevaBio()} style={
+                                this.state.cambioBio == false ?
+                                    styles.nada
+                                    :
+                                    styles.esconder
+                            }>
+                                <Entypo name="new-message" size={16} color="rgb(0, 193, 203)"/>
+                            </TouchableOpacity></Text>
                     }
                     {
                         this.state.cambioBio == false ?
@@ -275,14 +301,6 @@ class MiPerfil extends Component {
                                 </TouchableOpacity>
                             </>
                     }
-                    <TouchableOpacity onPress={() => this.nuevaBio()} style={
-                        this.state.cambioBio == false ?
-                            styles.nada
-                            :
-                            styles.esconder
-                    }>
-                        <Text style={styles.mail}>Actualizar bio</Text>
-                    </TouchableOpacity>
 
                     {/* CONTRASEÑA */}
                     <TouchableOpacity onPress={() => this.nuevaContra()}>
@@ -340,10 +358,10 @@ class MiPerfil extends Component {
                             renderItem={(data) => (<Posteos data={data.item.data} navigation={this.props.navigation} id={data.item.id} />)}
                         ></FlatList>
                 }
-                <TouchableOpacity onPress={() => this.logout()}>
+                <TouchableOpacity onPress={() => this.logout()} style={styles.botones}>
                     <Text style={styles.cerrarSesion}>Cerrar sesión</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.eliminarUsuario()}>
+                <TouchableOpacity onPress={() => this.eliminarUsuario()} style={styles.botones}>
                     <Text style={styles.cerrarSesion}>Eliminar usuario</Text>
                 </TouchableOpacity>
             </ScrollView>
