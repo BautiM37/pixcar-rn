@@ -12,6 +12,7 @@ class CadaComentario extends Component{
             cadaComment: []
         }}
         render () {
+            console.log(this.props.comentario);
             return (
                 <View>
                     <Text>{this.props.comentario.email}</Text>

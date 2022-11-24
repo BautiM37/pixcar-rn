@@ -47,7 +47,6 @@ class Posteos extends Component {
     render() {
 
         let data = this.props.data
-
         return (
             <View>
                 {

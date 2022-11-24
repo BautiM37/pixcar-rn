@@ -75,6 +75,8 @@ class MiPerfil extends Component {
         }
     }
 
+    // HACER QUE NO SE ACTUALIZE LA INFO DEL NOMBRE SI TOCO VOLVER
+
     componentDidMount() {
         this.infoPropia()
     }
@@ -82,23 +84,17 @@ class MiPerfil extends Component {
     infoPropia() {
         db.collection('usuarios').where('mail', '==', auth.currentUser.email).onSnapshot(
             docs => {
-                let miFoto = ''
-                let miBio = ''
-                let miNombre = ''
-                let miMail = ''
+                let data = ''
 
                 docs.forEach(doc => {
-                    miFoto = doc.data().foto
-                    miBio = doc.data().bio
-                    miNombre = doc.data().nombre
-                    miMail = doc.data().mail
+                    data = doc.data()
 
                     this.setState({
                         docID: doc.id,
-                        fotoMia: miFoto,
-                        bioMia: miBio,
-                        nombreMio: miNombre,
-                        mailMio: miMail
+                        fotoMia: data.foto,
+                        bioMia: data.bio,
+                        nombreMio: data.nombre,
+                        mailMio: data.mail
                     })
                 })
             }
