@@ -26,13 +26,11 @@ class Posteos extends Component {
         }
     }
     likear() {
-        let posteo = db.collection('posteos').doc(this.props.data.id)
-        posteo.update({
-            // FieldValue chequea que sea un array
-            // arrayUnion es un metodo de firebase asociado a la base de datos, firestore
-            // arrayUnion permite agregar un item a un array de firestore, solo si no está presente todavía
-            Likes: firebase.firestore.FieldValue.arrayUnion(1)
-
+        db.collection('posteos').doc(this.props.id).update({
+            likes: firebase.firestore.FieldValue.arrayUnion({
+                email: auth.currentUser.email,
+                createdAt: Date.now(),
+            })
         })
     }
     perfilOtro(persona) {
@@ -76,7 +74,7 @@ class Posteos extends Component {
                     {
                         data != undefined ?
                             <TouchableOpacity onPress={() => this.props.navigation.navigate('Comentarios', { id: this.props.id })}>
-                                <Text style={styles.Text}>Comentarios: { }</Text>
+                                <Text style={styles.Text}>Comentarios: {data.comentarios.length }</Text>
 
                             </TouchableOpacity> :
 
