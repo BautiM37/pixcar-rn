@@ -19,7 +19,9 @@ class Buscador extends Component {
         super(props)
         this.state={
           texto: "" ,
-          usuarios: []
+          usuarios: [],
+          posteos: [],
+          busco: false
         }
     }
    
@@ -38,10 +40,32 @@ class Buscador extends Component {
             })
         })
     }
+    mostrarPerfil(owner){
+        console.log(owner)
+        db.collection('posteos').where('email', '==', owner).onSnapshot(
+            docs => {
+                let posts = [];
+                docs.forEach(doc => {
+                    posts.push({
+                        id: doc.id,
+                        data: doc.data()
+                    })
+                  
+                   
+                })
+                this.setState({
+                    posteos: posts,
+                    busco: true
+                })
+            }
+        )
+
+    }
 
 
     render() {
-        console.log(this.state?.usuarios[0]?.data?.nombre)
+
+        console.log(this.state.posteos)
         return(
             <ScrollView style={styles.contenido}>
                 <Text style={styles.texto}>Buscar usuario</Text>
@@ -50,7 +74,8 @@ class Buscador extends Component {
                 placeholder='buscar perfil'
                 onChangeText={text => {this.buscarPerfil(text)
                 this.setState({
-                    texto: text
+                    texto: text,
+                    busco: false
                 })
                 }}
                 value={this.state.texto}
@@ -59,11 +84,21 @@ class Buscador extends Component {
                 <FlatList
                     data={this.state.usuarios}
                     keyExtractor={(item)=>item.id.toString()}
-                    renderItem={(data)=>(<TouchableOpacity style={styles.texto}> Se encontro un usuario:{data.item.data.mail} Tambien conocido como: {data.item.data.nombre}</TouchableOpacity>)} 
+                    renderItem={(data)=>(<TouchableOpacity onPress={()=>this.mostrarPerfil(data.item.data.mail)} style={styles.texto}> 
+                   <Text style={styles.texto}> Se encontro un usuario:{data.item.data.mail} Tambien conocido como: {data.item.data.nombre} </Text>
+                   <Text style={styles.texto}> Clikiame para ver sus posteos</Text>
+
+                    </TouchableOpacity>)} 
                     
                 ></FlatList>}
                 
-
+                {this.state.busco ==false?<Text ></Text>:
+                this.state.posteos.length==0? <Text style={styles.texto}>El usuario no tiene posteos</Text>:
+               <FlatList
+                data={this.state.posteos}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={(data) => (<Posteos data={data.item.data} navigation={this.props.navigation} id={data.item.id} />)}
+            ></FlatList>}
 
             </ScrollView>
         )
