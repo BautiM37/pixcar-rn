@@ -5,13 +5,12 @@ import Posteos from '../components/Posteos';
 
 const styles = StyleSheet.create({
     contenido: {
-        backgroundColor: 'rgb(28, 35, 43)'
+        backgroundColor: 'rgb(28, 35, 43)',
+        paddingTop: '20px'
     },
     misDatos: {
         alignItems: 'center',
         height: '300px',
-        backgroundColor: 'rgb(0, 0, 0)',
-        marginBottom: '70px',
     },
     photo: {
         width: '200px',
@@ -35,6 +34,13 @@ const styles = StyleSheet.create({
     mail: {
         fontStyle: 'italic',
         color: 'whitesmoke'
+    },
+    subtitulo: {
+        fontSize: '24px',
+        fontWeight: 'bold',
+        marginLeft: '1.5vw',
+        color: 'rgb(0, 193, 203)',
+        textAlign: 'center'
     }
 })
 
@@ -63,22 +69,16 @@ class Perfil extends Component {
     cargarDatos() {
         db.collection('usuarios').where('mail', '==', this.props.route.params.usuario).onSnapshot(
             docs => {
-                let fotoAjena = ''
-                let bioAjena = ''
-                let nombreAjeno = ''
-                let mailAjeno = ''
+                let data = ''
 
                 docs.forEach(doc => {
-                    fotoAjena = doc.data().foto
-                    bioAjena = doc.data().bio
-                    nombreAjeno = doc.data().nombre
-                    mailAjeno = doc.data().mail
+                    data = doc.data()
 
                     this.setState({
-                        fotoOtro: fotoAjena,
-                        bioOtro: bioAjena,
-                        nombreOtro: nombreAjeno,
-                        mailOtro: mailAjeno
+                        fotoOtro: data.foto,
+                        bioOtro: data.bio,
+                        nombreOtro: data.nombre,
+                        mailOtro: data.mail
                     })
                 })
             }
@@ -122,7 +122,7 @@ class Perfil extends Component {
                         <Text style={styles.biografia}>{this.state.bioOtro}</Text>
                     }
                 </View>
-                <Text style={styles.mail}>{this.state.posteosOtro.length} posteos</Text>
+                <Text style={styles.subtitulo}>{this.state.posteosOtro.length} posteos</Text>
                 {
                     this.state.posteosOtro.length == 0 ?
                         <Text style={styles.mail}>{this.state.nombreOtro} todavía no tiene posteos.</Text>

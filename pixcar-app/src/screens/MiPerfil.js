@@ -7,13 +7,12 @@ import { Entypo } from '@expo/vector-icons';
 
 const styles = StyleSheet.create({
     contenido: {
-        backgroundColor: 'rgb(28, 35, 43)'
+        backgroundColor: 'rgb(28, 35, 43)',
+        paddingTop: '20px'
     },
     misDatos: {
         alignItems: 'center',
         height: '500px',
-        backgroundColor: 'rgb(0, 0, 0)',
-        marginBottom: '70px',
     },
     photo: {
         width: '200px',
@@ -65,6 +64,13 @@ const styles = StyleSheet.create({
         border: '2px solid black',
         marginLeft: '25vw'
     },
+    subtitulo: {
+        fontSize: '24px',
+        fontWeight: 'bold',
+        marginLeft: '1.5vw',
+        color: 'rgb(0, 193, 203)',
+        textAlign: 'center'
+    }
 })
 
 class MiPerfil extends Component {
@@ -174,11 +180,22 @@ class MiPerfil extends Component {
             })
     }
 
-    noCambio() {
+    noCambioNomb() {
         this.setState({
             cambioNombre: false,
+            nombreNuevo: ''
+        })
+    }
+    noCambioBio() {
+        this.setState({
             cambioBio: false,
-            cambioPass: false
+            bioNueva: ''
+        })
+    }
+    noCambioContra() {
+        this.setState({
+            cambioPass: false,
+            contraNueva: ''
         })
     }
 
@@ -231,7 +248,7 @@ class MiPerfil extends Component {
                                 <TouchableOpacity disabled={this.state.nombreNuevo.length < 3 ? true : false} onPress={() => this.actualizarNombre()}>
                                     <Text style={styles.mail}>Aceptar</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.noCambio()}>
+                                <TouchableOpacity onPress={() => this.noCambioNomb()}>
                                     <Text style={styles.biografia}>Volver</Text>
                                 </TouchableOpacity>
                             </>
@@ -296,7 +313,7 @@ class MiPerfil extends Component {
                                 <TouchableOpacity onPress={() => this.actualizarBio()}>
                                     <Text style={styles.mail}>Aceptar</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.noCambio()}>
+                                <TouchableOpacity onPress={() => this.noCambioBio()}>
                                     <Text style={styles.biografia}>Volver</Text>
                                 </TouchableOpacity>
                             </>
@@ -332,7 +349,7 @@ class MiPerfil extends Component {
                                 <TouchableOpacity disabled={this.state.contraNueva.length < 8 ? true : false} onPress={() => this.actualizarContra()}>
                                     <Text style={styles.biografia}>Aceptar</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.noCambio()}>
+                                <TouchableOpacity onPress={() => this.noCambioContra()}>
                                     <Text style={styles.biografia}>Volver</Text>
                                 </TouchableOpacity>
                                 {
@@ -347,7 +364,7 @@ class MiPerfil extends Component {
                 </View>
 
                 {/* POSTEOS */}
-                <Text style={styles.mail}>{this.state.posteos.length} posteos</Text>
+                <Text style={styles.subtitulo}>{this.state.posteos.length} posteos</Text>
                 {
                     this.state.posteos.length == 0 ?
                         <Text style={styles.mail}>No tenés posteos. ¿Qué esperás para crear tu primero?</Text>

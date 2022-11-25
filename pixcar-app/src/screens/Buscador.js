@@ -1,16 +1,47 @@
 import React, { Component } from 'react';
-import { View, Text, Image, StyleSheet, FlatList, ScrollView, TextInput, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, FlatList, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { db } from '../firebase/config'
 import Posteos from '../components/Posteos';
-
-
+import HeaderLogo from '../components/HeaderLogo';
 
 const styles = StyleSheet.create({
     contenido: {
-        backgroundColor: 'rgb(28, 35, 43)'
+        backgroundColor: 'rgb(28, 35, 43)',
+        paddingTop: '20px',
     },
     texto: {
         color: "white"
+    },
+    titulo: {
+        fontWeight: 'bold',
+        color: 'whitesmoke',
+        fontSize: '30px',
+        marginBottom: '30px',
+        textAlign: 'center',
+        marginTop: '20vw'
+    },
+    inputs: {
+        border: 'solid 3px rgb(0, 193, 203)',
+        backgroundColor: 'rgb(0, 0, 0)',
+        color: 'rgb(0, 193, 203)',
+        margin: '1.5vw',
+        borderRadius: '5px',
+        padding: '2.5vw',
+    },
+    botones: {
+        backgroundColor: 'rgb(0, 193, 203)',
+        margin: '1.5vw',
+        borderRadius: '5px',
+        padding: '3vw',
+        textAlign: 'center',
+        marginBottom: '10px',
+        width: '50vw',
+        border: '2px solid black',
+        marginLeft: '25vw'
+    },
+    buscar: {
+        color: 'rgb(0, 0, 0)',
+        fontWeight: 'bold'
     }
 })
 
@@ -22,7 +53,8 @@ class Buscador extends Component {
             usuarios: [],
             posteos: [],
             busco: false,
-            persona: ''
+            persona: '',
+            nombre: ''
         }
     }
 
@@ -36,30 +68,14 @@ class Buscador extends Component {
                 })
                 this.setState({
                     usuarios: usuario,
-                    persona: doc.data().mail
+                    persona: doc.data().mail,
+                    nombre: doc.data().nombre
                 })
             });
 
         })
     }
-    mostrarPerfil(owner) {
-        db.collection('posteos').where('email', '==', owner).onSnapshot(
-            docs => {
-                let posts = [];
-                docs.forEach(doc => {
-                    posts.push({
-                        id: doc.id,
-                        data: doc.data()
-                    })
-                })
-                this.setState({
-                    posteos: posts,
-                    busco: true
-                })
-            }
-        )
 
-    }
     irAPerfil() {
         this.props.navigation.navigate('Perfil', { usuario: this.state.persona })
     }
@@ -67,8 +83,9 @@ class Buscador extends Component {
     render() {
         return (
             <ScrollView style={styles.contenido}>
-                <Text style={styles.texto}>Buscar usuario</Text>
-                <TextInput style={styles.texto}
+                <HeaderLogo />
+                <Text style={styles.titulo}>Buscar usuario</Text>
+                <TextInput style={styles.inputs}
                     keyboardType='default'
                     placeholder='buscar perfil'
                     onChangeText={text => {
@@ -80,17 +97,23 @@ class Buscador extends Component {
                     }}
                     value={this.state.texto}
                 />
-                {this.state.usuarios.length == 0 ? <Text style={styles.texto}>No se encuentra ningun perfil con ese nombre de usuario</Text> :
-                    <FlatList
-                        data={this.state.usuarios}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={(data) => (<TouchableOpacity onPress={() => this.mostrarPerfil(data.item.data.mail)} style={styles.texto}>
-                            <Text style={styles.texto}> Se encontro un usuario:{data.item.data.mail} Tambien conocido como: {data.item.data.nombre} </Text>
-                            <Text style={styles.texto}>Ir al <TouchableOpacity onPress={() => this.irAPerfil()}><Text style={styles.texto}>usuario</Text></TouchableOpacity></Text>
+                {
+                    this.state.texto != '' ?
+                        this.state.usuarios.length == 0 ? <Text style={styles.texto}>No encontramos ningún perfil con ese nombre de usuario</Text>
+                            :
+                            <>
+                                <Text style={styles.texto}> Se encontro un usuario, {this.state.nombre}</Text>
 
-                        </TouchableOpacity>)}
+                                <TouchableOpacity onPress={() => this.irAPerfil()} style={styles.botones}>
+                                    <Text style={styles.buscar}>Ir al usuario</Text>
+                                </TouchableOpacity>
 
-                    ></FlatList>}
+                            </>
+                        :
+                        <></>
+
+
+                }
 
                 {this.state.busco == false ? <Text ></Text> :
                     this.state.posteos.length == 0 ? <Text style={styles.texto}>El usuario no tiene posteos</Text> :
