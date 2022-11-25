@@ -1,6 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, {Component}from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Entypo, Ionicons } from '@expo/vector-icons';
+
 const Tab = createBottomTabNavigator()
 
 // importar vistas
@@ -25,10 +27,10 @@ class Navegador extends Component {
             tabBarStyle: {backgroundColor: 'rgb(230, 230, 230)'},
             headerShown: false,
         }}>
-            <Tab.Screen name="StackHome" component= {StackHome}/>
-            <Tab.Screen name="MiPerfil" component= {MiPerfil}/>
-            <Tab.Screen name="Postear" component= {Postear} />
-            <Tab.Screen name="StackPerfilOtro" component= {StackPerfilOtro}/>
+            <Tab.Screen name="StackHome" component= {StackHome} options={{tabBarIcon: () => <Entypo name="home" size={24} color="black" />}}/>
+            <Tab.Screen name="MiPerfil" component= {MiPerfil} options={{tabBarIcon: () => <Ionicons name="person-circle" size={24} color="black" />}}/>
+            <Tab.Screen name="Postear" component= {Postear} options={{tabBarIcon: () => <Ionicons name="ios-camera" size={24} color="black" />}}/>
+            <Tab.Screen name="StackPerfilOtro" component= {StackPerfilOtro} options={{tabBarIcon: () => <Ionicons name="ios-search" size={24} color="black" />}}/>
         </Tab.Navigator>
     
     

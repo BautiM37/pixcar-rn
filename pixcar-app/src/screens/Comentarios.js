@@ -9,15 +9,49 @@ import firebase from 'firebase';
 
 const styles = StyleSheet.create({
     contenedor: {
-        backgroundColor: 'white',
+        backgroundColor: 'rgb(28, 35, 43)',
         flex: 1,
         width: '100vw',
-        padding: 30,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+    },
+    texto: {
+        color: 'rgb(0, 193, 203)',
+        textAlign: 'center'
+    },
+    textoBoton: {
+        color: 'black',
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+    boton: {
+        backgroundColor: 'rgb(0, 193, 203)',
+        margin: '1.5vw',
+        borderRadius: '5px',
+        padding: '5vw',
+        textAlign: 'center',
+        marginBottom: '20px',
+        width: '50vw',
+        border: '2px solid black',
+        marginLeft: '25vw'
+    },
+    inputs: {
+        border: 'solid 3px rgb(0, 193, 203)',
+        backgroundColor: 'rgb(0, 0, 0)',
+        color: 'rgb(0, 193, 203)',
+        margin: '1.5vw',
+        borderRadius: '5px',
+        padding: '2.5vw',
+    },
+    comentar: {
+        backgroundColor: 'rgb(0, 193, 203)',
+        margin: '1.5vw',
+        borderRadius: '5px',
+        padding: '2vw',
+        textAlign: 'center',
+        marginBottom: '20px',
+        width: '60vw',
+        border: '2px solid black',
+        marginLeft: '20vw'
     }
-
-
 })
 
 class Comentarios extends Component {
@@ -49,7 +83,6 @@ class Comentarios extends Component {
             .doc(this.props.route.params.id)
             .onSnapshot(
                 docs => {
-                    console.log(docs.data());
                     this.setState({
                         data: docs.data(),
                         comentarios: docs.data().comentarios
@@ -75,14 +108,13 @@ class Comentarios extends Component {
     }
 
     render() {
-        console.log(this.state.id);
         return (
             <View style={styles.contenedor}>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('Home')}><Text>Volver uwu</Text></TouchableOpacity>
-                <Text>Comentarios del posteo:</Text>
+                <TouchableOpacity style={styles.boton} onPress={() => this.props.navigation.navigate('Home')}><Text style={styles.textoBoton}>Volver</Text></TouchableOpacity>
+                <Text style={styles.texto}>Comentarios del posteo: {this.state.comentarios.length}</Text>
                 {
                     this.state.comentarios.length == 0 ?
-                        <Text>No hay comentarios xd</Text>
+                        <Text style={styles.texto}>No hay comentarios</Text>
                         :
                         <FlatList
                             data={this.state.comentarios}
@@ -91,13 +123,13 @@ class Comentarios extends Component {
                 }
 
                 <View>
-                    <TextInput
+                    <TextInput style={styles.inputs}
                         placeholder='¡Comenta lo que pienses!'
                         keyboardType='deafult'
                         onChangeText={text => this.setState({ nuevoComentario: text })}
                         value={this.state.nuevoComentario}
                     />
-                    <TouchableOpacity onPress={() => this.agregarComentario(this.state.nuevoComentario)}>
+                    <TouchableOpacity style={styles.comentar} onPress={() => this.agregarComentario(this.state.nuevoComentario)}>
                         <Text>Publicar comentario</Text>
                     </TouchableOpacity>
 

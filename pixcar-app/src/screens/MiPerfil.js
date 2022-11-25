@@ -117,7 +117,7 @@ class MiPerfil extends Component {
                 })
             }
         )
-        db.collection('posteos').where('email', '==', auth.currentUser.email).onSnapshot(
+        db.collection('posteos').where('email', '==', auth.currentUser.email).orderBy('createdAt', 'desc').onSnapshot(
             docs => {
                 let posts = [];
                 docs.forEach(doc => {

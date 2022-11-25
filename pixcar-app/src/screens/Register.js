@@ -264,7 +264,7 @@ class Register extends Component {
                                             </View>
                                         </View>
                                     :
-                                    <Text>Habilitá la camara desde los ajustes de tu smartphone</Text>
+                                    <Text style={styles.infoMal}>Habilitá la camara desde los ajustes de tu smartphone</Text>
                             }
                         </View>
                     </View>

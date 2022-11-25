@@ -7,22 +7,35 @@ const styles = StyleSheet.create({
     contenedor: {
         flex: 1,
         width: '100vw',
-        backgroundColor: 'rgb(28, 35, 43)'
+        backgroundColor: 'rgb(28, 35, 43)',
     },
     cameraBody: {
-        flex: 1,
         height: '400px',
         width: '400px',
     },
     cont: {
-        flex: 1
+        height: '400px',
+        margin: '1.5vw',
+        textAlign: 'center',
+    },
+    infoMal: {
+        color: 'red',
+        margin: '1.5vw',
+        marginTop: '5px',
+        marginBottom: '5px'
     },
     boton: {
-        flex: 1
+        height: '15px'
     },
     input: {
         width: '100%',
         textAlign: 'center'
+    },
+    textoBoton: {
+        color: 'rgb(0, 193, 203)',
+        marginTop: '15px',
+        fontWeight: 'bold',
+        fontSize: '20px'
     }
 })
 
@@ -100,11 +113,11 @@ class MyCamera extends Component {
                                 />
                                 <View>
                                     <TouchableOpacity onPress={() => this.guardarFoto()}>
-                                        <Text>Usar</Text>
+                                        <Text style={styles.textoBoton}>Usar</Text>
                                     </TouchableOpacity>
 
                                     <TouchableOpacity onPress={() => this.borrarFoto()}>
-                                        <Text>Borrar</Text>
+                                        <Text style={styles.textoBoton}>Borrar</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -117,12 +130,12 @@ class MyCamera extends Component {
                                 />
                                 <View style={styles.boton}>
                                     <TouchableOpacity onPress={() => this.tomarFoto()}>
-                                        <Text style={styles.input}>Tomar foto</Text>
+                                        <Text style={styles.textoBoton}>Tomar foto</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
                         :
-                        <Text>Habilitá la camara desde los ajustes de tu smartphone</Text>
+                        <Text style={styles.infoMal}>Habilitá la camara desde los ajustes de tu smartphone</Text>
                 }
             </View>
         )
